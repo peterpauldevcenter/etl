@@ -1,4 +1,5 @@
-from sqlalchemy import Column, String, Boolean, Integer
+from sqlalchemy import Column, String, Boolean, Integer, ForeignKey
+from sqlalchemy.orm import relationship
 from etl.models import Base
 
 
@@ -6,7 +7,7 @@ class StudentRoster(Base):
     """Model for static and summary level student features."""
     __tablename__ = 'student_roster'
 
-    id = None
+    id = Column(Integer, primary_key=True)
     initial_enrollment_date = None
     number_of_completed_school_years = None
 
@@ -18,7 +19,7 @@ class PeterPaulTerm(Base):
     """
     __tablename__ = 'peter_paul_term'
 
-    id = None
+    id = Column(Integer, primary_key=True)
     """Since time series are of variable length, rely on their sequential order."""
     sequential_order = None
 
@@ -27,4 +28,10 @@ class StudentTimeSeries(Base):
     """Model for time series student features"""
     __tablename__ = 'student_roster_time_series'
 
-    id = None
+    id = Column(Integer, primary_key=True)
+    time_series = Column(Integer, ForeignKey('PeterPaulTerm.id'))
+    grade = Column(Integer)
+    peter_paul_location = Column(Integer, ForeignKey('PeterPaulLocation.id'))
+    attended_peter_paul_for_time_series = Column(Boolean)
+
+
