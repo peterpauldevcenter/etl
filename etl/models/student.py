@@ -12,8 +12,14 @@ class StudentRoster(Base):
     number_of_completed_school_years = None
 
 
+class Year(Base):
+    """Model for year time series"""
+    id = Column(Integer, primary_key=True)
+    year = Column(Integer, unique=True)
+
+
 class PeterPaulTerm(Base):
-    """Model to represent a time series of related Peter Paul activities.
+    """Model to for Peter Paul term.
 
     Sometimes time series may be a full year, other times sessions are just Summers.
     """
@@ -22,10 +28,11 @@ class PeterPaulTerm(Base):
     id = Column(Integer, primary_key=True, autoincrement='auto')
     """Since time series are of variable length, rely on their sequential order."""
     sequential_order = Column(Integer,)
+    year_id = Column(Integer, ForeignKey('Year.id'))
 
 
-class StudentTimeSeries(Base):
-    """Model for time series student features"""
+class StudentTermTimeSeries(Base):
+    """Model for Peter Paul term time series student features"""
     __tablename__ = 'student_roster_time_series'
 
     growth_eumerated_values = 'any projection exceeded'.split()
@@ -41,6 +48,19 @@ class StudentTimeSeries(Base):
     growth_in_math = Column(Enum(growth_eumerated_values))
     test_percentile_in_math = Column(Integer)
     met_national_norm_in_math = Column(Boolean)
+
+
+class StudentYearTimeSeries(Base):
+    """Model for year based student features."""
+    __tablename__ = 'student_year_time_series'
+
+    id = Column(Integer, primary_key=True, autoincrement='auto')
+    student_id = Column(Integer, ForeignKey('StudentRoster.id'))
+    year = Column(Integer, ForeignKey('Year.id'), unique=True)
+    grade_promotion = Column(Boolean)
+    school_missed_for_suspension = Column(Boolean)
+    reading_sol_passed = Column(Boolean)
+    math_sol_passed = Column(Boolean)
 
 
 class StudentObservation(Base):
