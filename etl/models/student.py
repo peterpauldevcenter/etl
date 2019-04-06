@@ -19,6 +19,8 @@ class PeterPaulTerm(Base):
     __tablename__ = 'peter_paul_term'
 
     id = None
+    """Since time series are of variable length, rely on their sequential order."""
+    sequential_order = None
 
 
 class StudentTimeSeries(Base):
