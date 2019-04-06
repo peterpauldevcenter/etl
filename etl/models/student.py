@@ -43,3 +43,13 @@ class StudentTimeSeries(Base):
     met_national_norm_in_math = Column(Boolean)
 
 
+class StudentObservation(Base):
+    __tablename__ = 'student_roster_observation'
+
+    id = Column(Integer, primary_key=True, autoincrement='auto')
+    student_id = Column(Integer, ForeignKey('StudentRoster.id'))
+    peter_paul_term_id = Column(Integer, ForeignKey('PeterPaulTerm.id'))
+    # ToDO: Define enum?
+    description_reading = Column(String)
+    description_math = Column(String)
+
