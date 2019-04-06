@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Boolean, Integer, ForeignKey
+from sqlalchemy import Column, String, Boolean, Integer, ForeignKey, Enum
 from sqlalchemy.orm import relationship
 from etl.models import Base
 
@@ -7,7 +7,7 @@ class StudentRoster(Base):
     """Model for static and summary level student features."""
     __tablename__ = 'student_roster'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement='auto')
     initial_enrollment_date = None
     number_of_completed_school_years = None
 
@@ -19,19 +19,27 @@ class PeterPaulTerm(Base):
     """
     __tablename__ = 'peter_paul_term'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement='auto')
     """Since time series are of variable length, rely on their sequential order."""
-    sequential_order = None
+    sequential_order = Column(Integer,)
 
 
 class StudentTimeSeries(Base):
     """Model for time series student features"""
     __tablename__ = 'student_roster_time_series'
 
-    id = Column(Integer, primary_key=True)
+    growth_eumerated_values = 'any projection exceeded'.split()
+
+    id = Column(Integer, primary_key=True, autoincrement='auto')
     time_series = Column(Integer, ForeignKey('PeterPaulTerm.id'))
     grade = Column(Integer)
     peter_paul_location = Column(Integer, ForeignKey('PeterPaulLocation.id'))
     attended_peter_paul_for_time_series = Column(Boolean)
+    growth_in_reading = Column(Enum(growth_eumerated_values))
+    test_percentile_in_reading = Column(Integer)
+    met_national_norm_in_reading = Column(Boolean)
+    growth_in_math = Column(Enum(growth_eumerated_values))
+    test_percentile_in_math = Column(Integer)
+    met_national_norm_in_math = Column(Boolean)
 
 
