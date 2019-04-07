@@ -20,9 +20,9 @@ class StudentTermObservation(Base):
 
     id = Column(Integer, primary_key=True, autoincrement='auto')
     student_id = Column(Integer, ForeignKey('student_roster.id'))
-    time_series = Column(Integer, ForeignKey('PeterPaulTerm.id'))
+    time_series = Column(Integer, ForeignKey('trimester_observation.id'))
     grade = Column(Integer)
-    peter_paul_location = Column(Integer, ForeignKey('PeterPaulLocation.id'))
+    peter_paul_location = Column(Integer, ForeignKey('peter_paul_location.id'))
     attended_peter_paul_for_time_series = Column(Boolean)
     growth_in_reading = Column(Enum(growth_eumerated_values))
     test_percentile_in_reading = Column(Integer)
@@ -33,11 +33,15 @@ class StudentTermObservation(Base):
 
 
 class StudentExperienceQuestionnaire(Base):
+    """Model for the student questionnaire, taken once in the Fall and again in the Spring.
+
+    todo: Group questions
+    """
     __tablename__ = 'student_experience_questionnaire'
 
     id = Column(Integer, primary_key=True, autoincrement='auto')
     student_id = Column(Integer, ForeignKey('student_roster.id'))
-    time_series_id = Column(Integer, ForeignKey('BiannualObservation.id'))
+    time_series_id = Column(Integer, ForeignKey('biannual_observation.id'))
     kids_friendly_with_each_other = Column(Integer)
     does_unwanted_teasing = Column(Integer)
     kids_treat_each_other_respect = Column(Integer)
@@ -74,28 +78,3 @@ class StudentExperienceQuestionnaire(Base):
     be_successful_in_high_school = Column(Integer)
     graduated_from_high_school = Column(Integer)
     go_to_college = Column(Integer)
-
-
-class StudentYearTimeSeries(Base):
-    """Model for year based student features."""
-    __tablename__ = 'student_year_time_series'
-
-    id = Column(Integer, primary_key=True, autoincrement='auto')
-    student_id = Column(Integer, ForeignKey('student_roster.id'))
-    year = Column(Integer, ForeignKey('year.id'), unique=True)
-    grade_promotion = Column(Boolean)
-    school_missed_for_suspension = Column(Boolean)
-    reading_sol_passed = Column(Boolean)
-    math_sol_passed = Column(Boolean)
-
-
-class StudentObservation(Base):
-    __tablename__ = 'student_roster_observation'
-
-    id = Column(Integer, primary_key=True, autoincrement='auto')
-    student_id = Column(Integer, ForeignKey('StudentRoster.id'))
-    peter_paul_term_id = Column(Integer, ForeignKey('PeterPaulTerm.id'))
-    # ToDO: Define enum?
-    description_reading = Column(String)
-    description_math = Column(String)
-
