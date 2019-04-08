@@ -16,7 +16,7 @@ class BiannualObservation(Base):
 
     id = Column(Integer, primary_key=True, autoincrement='auto')
     year_id = Column(Integer, ForeignKey('year.id'))
-    season = Column(Enum('Spring Summer Winter Fall'.split()))
+    season = Column(Enum('Fall Spring'.split()))
 
 
 class QuarterlyObservation(Base):
