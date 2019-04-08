@@ -2,28 +2,47 @@ from sqlalchemy import Column, String, Boolean, Integer, ForeignKey
 from etl.models import Base
 
 
-class PeterPaulOrganization(Base):
-    """Model for Peter Paul Organizations"""
-    __tablename__ = 'peter_paul_organization'
+class PeterPaulLocation(Base):
+    """Model for Peter Paul Locations
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    todo: combine into a consolidated Peter Paul location model
+    """
+    __tablename__ = 'peter_paul_location'
+
+    id = Column(Integer, primary_key=True, autoincrement='auto')
     name = Column(String)
 
 
-class Demographics(Base):
-    """Model for student demographics in the Richmond Public School system"""
-    __tablename__ = 'demographics'
+class StudentDemographics(Base):
+    """Model for student demographics in the Richmond Public School system
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    student_id = Column(Integer)
+    todo: combine into consolidated student model
+    """
+    __tablename__ = 'student_demographics'
 
-    peter_paul_organization_id = Column(Integer, ForeignKey('peter_paul_organization.id'))
+    id = Column(Integer, primary_key=True, autoincrement='auto')
+    student_id = Column(Integer, ForeignKey('student.id'))
+
     year_of_birth = Column(Integer)
     race = Column(String)
     gender = Column(String)
+
+
+class StudentAnnualDemographics(Base):
+    """Model for student demographics in the Richmond Public School system
+
+    todo: what is pfn again?
+    """
+    __tablename__ = 'student_annual_demographics'
+
+    id = Column(Integer, primary_key=True, autoincrement='auto')
+    student_id = Column(Integer, ForeignKey('student.id'))
+    year_id = Column(Integer, ForeignKey('year.id'))
+
+    peter_paul_location_id = Column(Integer, ForeignKey('peter_paul_location.id'))
     family_size = Column(Integer)
     household_type = Column(String)
     family_setting = Column(String)
-    income_category_id = Column(String)
+    income_category = Column(String)
     disability = Column(Boolean)
     student_pfn = Column(String)
