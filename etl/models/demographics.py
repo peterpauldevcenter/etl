@@ -10,18 +10,6 @@ class PeterPaulOrganization(Base):
     name = Column(String)
 
 
-class IncomeCategory(Base):
-    """Model for Income Categories as an ordinal attribute"""
-    __tablename__ = 'income_category'
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    min = Column(Integer)
-    max = Column(Integer)
-
-    name = Column(String)
-    income_category_sequence = Column(Integer)
-
-
 class Demographics(Base):
     """Model for student demographics in the Richmond Public School system"""
     __tablename__ = 'demographics'
@@ -36,6 +24,6 @@ class Demographics(Base):
     family_size = Column(Integer)
     household_type = Column(String)
     family_setting = Column(String)
-    income_category_id = Column(Integer, ForeignKey('income_category.id'))
+    income_category_id = Column(String)
     disability = Column(Boolean)
     student_pfn = Column(String)
