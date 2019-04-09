@@ -1,0 +1,202 @@
+[
+  {
+    "column_label": "n",
+    "expected_header": "a. Are kids here friendly with each other?",
+    "transformation": "ScaleTransformation"
+  },
+  {
+    "column_label": "o",
+    "expected_header": "b. Does a lot of unwanted teasing go on here?",
+    "transformation": "InverseScaleTransformation"
+  },
+  {
+    "column_label": "p",
+    "expected_header": "c. Do kids here treat each other with respect?",
+    "transformation": "ScaleTransformation"
+  },
+  {
+    "column_label": "q",
+    "expected_header": "d. Do you have a lot of good friends here?",
+    "transformation": "ScaleTransformation"
+  },
+  {
+    "column_label": "r",
+    "expected_header": "e. If you were upset, would other kids here try to help you?",
+    "transformation": "ScaleTransformation"
+  },
+  {
+    "column_label": "s",
+    "expected_header": "f. Do the other kids here listen to you?",
+    "transformation": "ScaleTransformation"
+  },
+  {
+    "column_label": "t",
+    "expected_header": "a. Do you like coming here?",
+    "transformation": "ScaleTransformation"
+  },
+  {
+    "column_label": "u",
+    "expected_header": "b. Do you have fun when you're here?",
+    "transformation": "ScaleTransformation"
+  },
+  {
+    "column_label": "v",
+    "expected_header": "c. Do you feel bored when you're here?",
+    "transformation": "InverseScaleTransformation"
+  },
+  {
+    "column_label": "w",
+    "expected_header": "d. Can you always find things that you like to do here?",
+    "transformation": "ScaleTransformation"
+  },
+  {
+    "column_label": "x",
+    "expected_header": "Open-Ended Response",
+    "transformation": null
+  },
+  {
+    "column_label": "y",
+    "expected_header": "a. Do you learn new things?",
+    "transformation": "ScaleTransformation"
+  },
+  {
+    "column_label": "z",
+    "expected_header": "b. Do you feel challenged in a good way?",
+    "transformation": "ScaleTransformation"
+  },
+  {
+    "column_label": "aa",
+    "expected_header": "c. Do you get to do things here that you have never done before?",
+    "transformation": "ScaleTransformation"
+  },
+  {
+    "column_label": "ab",
+    "expected_header": "Open-Ended Response",
+    "transformation": null
+  },
+  {
+    "column_label": "ac",
+    "expected_header": "a. Is there an adult here who is interested in what you think about things?",
+    "transformation": "ScaleTransformation"
+  },
+  {
+    "column_label": "ad",
+    "expected_header": "b. Is there an adult here you can talk to when you are upset?",
+    "transformation": "ScaleTransformation"
+  },
+  {
+    "column_label": "ae",
+    "expected_header": "c. Is there an adult here who helps you when you have a problem?",
+    "transformation": "ScaleTransformation"
+  },
+  {
+    "column_label": "af",
+    "expected_header": "d. Is there an adult here who you will listen to and respect?",
+    "transformation": "ScaleTransformation"
+  },
+  {
+    "column_label": "ag",
+    "expected_header": "a. I like to read at home during my free time.",
+    "transformation": "AgreementTransformation"
+  },
+  {
+    "column_label": "ah",
+    "expected_header": "b. I enjoy reading when I'm at school.",
+    "transformation": "AgreementTransformation"
+  },
+  {
+    "column_label": "ai",
+    "expected_header": "c. I enjoy reading when I'm at this after-school program.",
+    "transformation": "AgreementTransformation"
+  },
+  {
+    "column_label": "aj",
+    "expected_header": "d. I'm good at reading.",
+    "transformation": "AgreementTransformation"
+  },
+  {
+    "column_label": "ak",
+    "expected_header": "e. I like to give new books a try, even if they look hard.",
+    "transformation": "AgreementTransformation"
+  },
+  {
+    "column_label": "al",
+    "expected_header": "Response",
+    "transformation": "ScaleTransformation"
+  },
+  {
+    "column_label": "am",
+    "expected_header": "a. I like to learn new things in math.",
+    "transformation": "AgreementTransformation"
+  },
+  {
+    "column_label": "an",
+    "expected_header": "b. I like to do math when I'm at school.",
+    "transformation": "AgreementTransformation"
+  },
+  {
+    "column_label": "ao",
+    "expected_header": "c. I like to do math when I'm at this after-school program.",
+    "transformation": "AgreementTransformation"
+  },
+  {
+    "column_label": "ap",
+    "expected_header": "d. Math is something I'm good at.",
+    "transformation": "AgreementTransformation"
+  },
+  {
+    "column_label": "aq",
+    "expected_header": "e. I'm interested in math.",
+    "transformation": "AgreementTransformation"
+  },
+  {
+    "column_label": "ar",
+    "expected_header": "f. I like to give new math problems a try, even when they look hard.",
+    "transformation": "AgreementTransformation"
+  },
+  {
+    "column_label": "as",
+    "expected_header": "Response",
+    "transformation": "ScaleTransformation"
+  },
+  {
+    "column_label": "at",
+    "expected_header": "a. Coming here has helped me to get my homework done.",
+    "transformation": "AgreementTransformation"
+  },
+  {
+    "column_label": "au",
+    "expected_header": "b. Coming here has helped me to try harder in school.",
+    "transformation": "AgreementTransformation"
+  },
+  {
+    "column_label": "av",
+    "expected_header": "c. Coming here has helped me to do better in school.",
+    "transformation": "AgreementTransformation"
+  },
+  {
+    "column_label": "aw",
+    "expected_header": "Response",
+    "transformation": null
+  },
+  {
+    "column_label": "ax",
+    "expected_header": "Response",
+    "transformation": "GradeStringToIntTransformation"
+  },
+  {
+    "column_label": "ay",
+    "expected_header": "a. Be successful in high school?",
+    "transformation": "ExpectationTransformation"
+  },
+  {
+    "column_label": "az",
+    "expected_header": "b. Graduate from high school?",
+    "transformation": "ExpectationTransformation"
+  },
+  {
+    "column_label": "ba",
+    "expected_header": "c. Go to college?",
+    "transformation": "ExpectationTransformation"
+  }
+]
