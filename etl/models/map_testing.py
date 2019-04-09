@@ -37,14 +37,16 @@ class MAPTest(Base):
     """Model for tracking MAP test results
 
     The MAP test is given three times a year.
-    todo: I should be able to map from student.id and trimester.year to school.id and grade_level
+
+    Projected proficiencies are captured annually on a file that is sent three times a year.
+    Any new value will update the old.
     """
     __tablename__ = 'map_test'
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     student_id = Column(Integer, ForeignKey('map_student.id'))
     trimester_id = Column(Integer, ForeignKey('trimester.id'))  # term
-    test_type = Column(String)  # measurement_scale / discipline
+    discipline = Column(String)
 
     rit_score = Column(Integer)
     rit_score_standard_error = Column(Float)
@@ -52,12 +54,15 @@ class MAPTest(Base):
     percent_correct = Column(Integer)
     accommodation_category = Column(String)
     accommodation = Column(String)
+    act_projected_proficiency = Column(Enum('On Track', 'Non on Track'))
+    sol_projected_proficiency = Column(Enum('Advanced', 'Proficient', 'Basic'))
 
 
 class MAPGrowth(Base):
     """Model for tracking growth in MAP scores from trimester to trimester
 
-    todo: is this annual, or is it 3/yr
+    todo: at fall, fall to each season is captured as a projection
+    todo: at winter, fall to winter actuals at captured and winter to spring projections are captured
     """
     __tablename__ = 'map_growth'
 
@@ -88,21 +93,3 @@ class MAPTestGoal(Base):
     range_min = Column(Integer)
     range_max = Column(Integer)
     level = Column(String)  # adjective
-
-
-class MAPProjectedProficiency(Base):
-    """Model for tracking projected proficiencies for various studies (ACT and SOL for now)
-
-    Projected proficiencies are captured annually on a file that is sent three times a year.
-    Any new value will update the old.
-
-    todo: do these vary between math/reading
-    """
-    __tablename__ = 'map_projected_proficiency'
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    student_id = Column(Integer, ForeignKey('student.id'))
-    year_id = Column(Integer, ForeignKey('year.id'))
-
-    act = Column(Enum('On Track', 'Non on Track'))
-    sol = Column(Enum('Advanced', 'Proficient', 'Basic'))

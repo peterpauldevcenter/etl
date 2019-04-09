@@ -52,7 +52,6 @@ class Attendance(Base):
     """Model for tracking school attendance by marking period
 
     todo: change foreign key for marking period
-    todo: is the iep by subject, or by quarter?
     """
     __tablename__ = 'school_attendance'
 

@@ -29,10 +29,7 @@ class StudentDemographics(Base):
 
 
 class StudentAnnualDemographics(Base):
-    """Model for student demographics in the Richmond Public School system
-
-    todo: what is pfn again?
-    """
+    """Model for student demographics in the Richmond Public School system"""
     __tablename__ = 'student_annual_demographics'
 
     id = Column(Integer, primary_key=True, autoincrement='auto')
@@ -45,4 +42,4 @@ class StudentAnnualDemographics(Base):
     family_setting = Column(String)
     income_category = Column(String)
     disability = Column(Boolean)
-    student_pfn = Column(String)
+    promise_family_network = Column(String)
