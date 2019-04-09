@@ -1,4 +1,4 @@
-from sqlalchemy import Column, String, Boolean, Integer, ForeignKey, Enum
+from sqlalchemy import Column, Boolean, Integer, ForeignKey, Enum, DateTime
 from sqlalchemy.orm import relationship
 from etl.models import Base
 
@@ -8,8 +8,8 @@ class StudentRoster(Base):
     __tablename__ = 'student_roster'
 
     id = Column(Integer, primary_key=True, autoincrement='auto')
-    initial_enrollment_date = None
-    number_of_completed_school_years = None
+    initial_enrollment_date = Column(DateTime)
+    number_of_completed_school_years = Column(Integer)
 
 
 class StudentTermObservation(Base):
