@@ -16,12 +16,6 @@ if TYPE_CHECKING:
     from typing import Dict, Tuple
 
 
-SCALE_TRANSFORMATION_NAME = 'ScaleTransformation'
-INVERSE_SCALE_TRANSFORMATION_NAME = 'InverseScaleTransformation'
-AGREEMENT_TRANSFORMATION_NAME = 'AgreementTransformation'
-EXPECTATION_TRANSFORMATION_NAME = 'ExpectationTransformation'
-GRADE_STRING_TO_INT_TRANSFORMATION_NAME = 'GradeStringToIntTransformation'
-
 #: Mapping Transformations to configuration keys so in the future we can describe the rules in data with a config
 tranformation_name_map = {
     cls.__name__.lower() for cls in (ScaleTransformation,
