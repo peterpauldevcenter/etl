@@ -1,5 +1,5 @@
-from etl.views import utils
-
+from etl.views import utils, engine, session
+from etl.models import timeseries
 
 class MarkingPeriodView:
 
@@ -17,3 +17,7 @@ class MarkingPeriodView:
             and mp.name = (','.join({marking_period}))
         '''
         return utils.execute_sql(sql)
+
+    def post(self, start_year, end_year):
+        marking_period = timeseries.MarkingPeriod()
+        engine.execute(marking_period.)

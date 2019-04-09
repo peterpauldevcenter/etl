@@ -14,6 +14,11 @@ class SchoolYear(Base):
     start_year = Column(Integer)
     end_year = Column(Integer)
 
+    def __init__(self, school_year: int):
+        self.end_year = school_year
+        self.start_year = school_year - 1
+        self.name = f'{self.start_year}-{self.end_year}'
+
 
 class Semester(Base):
     """Time series for observations occuring twice a year.
@@ -26,6 +31,15 @@ class Semester(Base):
     school_year_id = Column(Integer, ForeignKey('school_year.id'))
     name = Column(Enum('Fall Spring'.split()))
     time_series_sequence = Column(Integer)
+
+    semester_numbers = {'Fall': 0, 'Spring': 1}
+
+    def __init__(self, school_year: int, name: str):
+        school_year = SchoolYear(school_year)
+        self.school_year_id = school_year.id
+        self.name = name
+        semester_number = self.semester_numbers[name]
+        self.time_series_sequence = school_year.start_year * 2 + semester_number
 
 
 class Trimester(Base):
@@ -41,6 +55,15 @@ class Trimester(Base):
     time_series_sequence = Column(Integer)
     # todo unique together year_id and  trimester
 
+    trimester_numbers = {'Fall': 0, 'Winter': 1, 'Spring': 2}
+
+    def __init__(self, school_year: int, name: str):
+        school_year = SchoolYear(school_year)
+        self.school_year_id = school_year.id
+        self.name = name
+        trimester_number = self.trimester_numbers[name]
+        self.time_series_sequence = school_year.start_year * 3 + trimester_number
+
 
 class MarkingPeriod(Base):
     """Time series for observations occuring each quarter.
@@ -54,3 +77,13 @@ class MarkingPeriod(Base):
     name = Column(Integer)
     time_series_sequence = Column(Integer)
     # todo unique together year_id and quarter
+
+    marking_period_numbers = {'MP1': 0, 'MP2': 1, 'MP3': 2, 'MP4': 3}
+
+    def __init__(self, school_year: int, name: str):
+        school_year = SchoolYear(school_year)
+        self.school_year_id = school_year.id
+        self.name = name
+        marking_period_number = self.marking_period_numbers[name]
+        self.time_series_sequence = school_year.start_year * 4 + marking_period_number
+
