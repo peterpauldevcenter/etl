@@ -3,14 +3,16 @@ import pathlib
 from etl.views import session, engine
 
 
-def execute_sql(sql: str):
+def execute_sql(sql: str) -> list:
+    results = []
     try:
-        session.execute(sql)
+        results = session.execute(sql)
         session.commit()
     except:
         session.rollback()
     finally:
         session.close()
+        return results
 
 
 def create_stage_table_from_file(file: pathlib.Path) -> str:
