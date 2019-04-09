@@ -13,7 +13,7 @@ The component sections roll up to the questionnaire.
     - EnjoymentEngagementScale.feel_bored
     - SupportiveSocialEnvironmentScale.does_unwanted_teasing
 """
-from sqlalchemy import Column, Integer, ForeignKey, Enum
+from sqlalchemy import Column, Integer, ForeignKey, String
 from etl.models import Base
 
 
@@ -117,10 +117,20 @@ class Retrospective(Base):
     go_to_college = Column(Integer)
 
 
+class Freeform(Base):
+    """Fields to collect the free form questions.
+    """
+    __tablename__ = 'student_experience_questionnaire_freeform'
+
+    id = Column(Integer, primary_key=True, autoincrement='auto')
+    student_experience_questionnaire_id = Column(Integer, ForeignKey('student_experience_questionnaire.id'))
+
+    favorite_thing_to_do_here = Column(String(length=280))
+    activities_wish_offered = Column(String(length=280))
+
+
 class StudentExperienceQuestionnaire(Base):
     """Model for the student questionnaire, taken once in the Fall and again in the Spring.
-
-    todo: Group questions
     """
     __tablename__ = 'student_experience_questionnaire'
 
