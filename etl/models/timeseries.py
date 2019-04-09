@@ -23,7 +23,7 @@ class Semester(Base):
     __tablename__ = 'semester'
 
     id = Column(Integer, primary_key=True, autoincrement='auto')
-    year_id = Column(Integer, ForeignKey('year.id'))
+    school_year_id = Column(Integer, ForeignKey('school_year.id'))
     name = Column(Enum('Fall Spring'.split()))
     time_series_sequence = Column(Integer)
 
@@ -36,7 +36,7 @@ class Trimester(Base):
     __tablename__ = 'trimester'
 
     id = Column(Integer, primary_key=True, autoincrement='auto')
-    year_id = Column(Integer, ForeignKey('year.id'))
+    school_year_id = Column(Integer, ForeignKey('school_year.id'))
     name = Column(Integer, Enum('Fall Winter Spring'.split()))
     time_series_sequence = Column(Integer)
     # todo unique together year_id and  trimester
@@ -50,7 +50,7 @@ class MarkingPeriod(Base):
     __tablename__ = 'marking_period'
 
     id = Column(Integer, primary_key=True, autoincrement='auto')
-    year_id = Column(Integer, ForeignKey('year.id'))
+    school_year_id = Column(Integer, ForeignKey('school_year.id'))
     name = Column(Integer)
     time_series_sequence = Column(Integer)
     # todo unique together year_id and quarter

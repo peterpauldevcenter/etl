@@ -17,11 +17,12 @@ from sqlalchemy import Column, Integer, ForeignKey, Enum
 from etl.models import Base
 
 
-class SupportiveSocialEnvironmentScale(Base):
+class SocialScale(Base):
     __tablename__ = 'student_experience_questionnaire_social_scale'
 
     id = Column(Integer, primary_key=True, autoincrement='auto')
-    questionnaire_id = Column(Integer, ForeignKey('student_experience_questionnaire.id'))
+    student_experience_questionnaire_id = Column(Integer, ForeignKey('student_experience_questionnaire.id'))
+
     kids_friendly_with_each_other = Column(Integer)
     does_unwanted_teasing = Column(Integer)
     kids_treat_each_other_respect = Column(Integer)
@@ -30,22 +31,24 @@ class SupportiveSocialEnvironmentScale(Base):
     other_kids_listen_to_you = Column(Integer)
 
 
-class EnjoymentEngagementScale(Base):
+class EnjoymentScale(Base):
     __tablename__ = 'student_experience_questionnaire_enjoyment_scale'
 
     id = Column(Integer, primary_key=True, autoincrement='auto')
-    questionnaire_id = Column(Integer, ForeignKey('student_experience_questionnaire.id'))
+    student_experience_questionnaire_id = Column(Integer, ForeignKey('student_experience_questionnaire.id'))
+
     you_like_coming_here = Column(Integer)
     have_fun_here = Column(Integer)
     feel_bored = Column(Integer)
     find_things_to_do = Column(Integer)
 
 
-class FeelChallengedScale(Base):
+class ChallengeScale(Base):
     __tablename__ = 'student_experience_questionnaire_challenge_scale'
 
     id = Column(Integer, primary_key=True, autoincrement='auto')
-    questionnaire_id = Column(Integer, ForeignKey('student_experience_questionnaire.id'))
+    student_experience_questionnaire_id = Column(Integer, ForeignKey('student_experience_questionnaire.id'))
+
     learn_new_things = Column(Integer)
     feel_challenged = Column(Integer)
     do_new_things = Column(Integer)
@@ -55,7 +58,8 @@ class SupportiveAdultScale(Base):
     __tablename__ = 'student_experience_questionnaire_supportive_adult_scale'
 
     id = Column(Integer, primary_key=True, autoincrement='auto')
-    questionnaire_id = Column(Integer, ForeignKey('student_experience_questionnaire.id'))
+    student_experience_questionnaire_id = Column(Integer, ForeignKey('student_experience_questionnaire.id'))
+
     adult_interested_in_think = Column(Integer)
     adult_can_talk_when_upset = Column(Integer)
     adult_helps_with_problems = Column(Integer)
@@ -66,7 +70,8 @@ class ReaderScale(Base):
     __tablename__ = 'student_experience_questionnaire_reader_scale'
 
     id = Column(Integer, primary_key=True, autoincrement='auto')
-    questionnaire_id = Column(Integer, ForeignKey('student_experience_questionnaire.id'))
+    student_experience_questionnaire_id = Column(Integer, ForeignKey('student_experience_questionnaire.id'))
+
     like_to_read_at_home = Column(Integer)
     like_to_read_at_school = Column(Integer)
     like_to_read_after_school_program = Column(Integer)
@@ -79,7 +84,8 @@ class MathScale(Base):
     __tablename__ = 'student_experience_questionnaire_math_scale'
 
     id = Column(Integer, primary_key=True, autoincrement='auto')
-    questionnaire_id = Column(Integer, ForeignKey('student_experience_questionnaire.id'))
+    student_experience_questionnaire_id = Column(Integer, ForeignKey('student_experience_questionnaire.id'))
+
     like_to_learn_new_math = Column(Integer)
     like_to_do_math_at_school = Column(Integer)
     like_to_do_math_at_after_school_program = Column(Integer)
@@ -88,7 +94,7 @@ class MathScale(Base):
     like_to_try_new_math_problems = Column(Integer)
 
 
-class RetrospectiveQuestionnaire(Base):
+class Retrospective(Base):
     """Restrospective questions are independent, only for subjective analysis
     They are not used to create a scaled rating. Only asked on Spring survey.
     Fall survey will have nulls.
@@ -98,7 +104,8 @@ class RetrospectiveQuestionnaire(Base):
     __tablename__ = 'student_experience_questionnaire_retrospective'
 
     id = Column(Integer, primary_key=True, autoincrement='auto')
-    questionnaire_id = Column(Integer, ForeignKey('student_experience_questionnaire.id'))
+    student_experience_questionnaire_id = Column(Integer, ForeignKey('student_experience_questionnaire.id'))
+
     coming_to_this_program_helped_read_more_often = Column(Integer)
     coming_helped_math = Column(Integer)
     coming_helped_homework = Column(Integer)
@@ -118,5 +125,5 @@ class StudentExperienceQuestionnaire(Base):
     __tablename__ = 'student_experience_questionnaire'
 
     id = Column(Integer, primary_key=True, autoincrement='auto')
-    student_id = Column(Integer, ForeignKey('student_roster.id'))
-    time_series_id = Column(Integer, ForeignKey('biannual_observation.id'))
+    student_id = Column(Integer, ForeignKey('student.id'))
+    semester_id = Column(Integer, ForeignKey('semester.id'))
