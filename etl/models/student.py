@@ -11,6 +11,8 @@ class StudentRoster(Base):
     initial_enrollment_date = Column(DateTime)
     number_of_completed_school_years = Column(Integer)
 
+    term_observable = relationship('StudentTermObservation', black_populates='student_term_observation')
+
 
 class StudentTermObservation(Base):
     """Model for Peter Paul term time series student features"""
