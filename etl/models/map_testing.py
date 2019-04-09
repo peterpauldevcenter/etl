@@ -1,50 +1,20 @@
-from sqlalchemy import Column, String, Boolean, Integer, ForeignKey, Date, Float, DateTime, Enum
+"""Records MAP Test results, goals, and growth projections.
+
+The MAP Test is given three times per year, during the Fall, Winter, and Spring of each school year.
+"""
+from sqlalchemy import Column, String, Integer, ForeignKey, Float, Enum
 from etl.models import Base
-
-
-class MAPStudent(Base):
-    """Model for MAP test students
-
-    todo: combine into a consolidated student model
-    """
-    __tablename__ = 'map_student'
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    student_id = Column(Integer)
-
-    first_name = Column(String)
-    last_name = Column(String)
-    middle_initial = Column(String)
-    date_of_birth = Column(Date)
-    ethnic_group = Column(String)
-    gender = Column(String)
-
-
-class MAPSchool(Base):
-    """Model for MAP test schools
-
-    This should be able to be derived from student.id and map_test.trimester.year
-    todo: combine into a consolidated school model
-    """
-    __tablename__ = 'map_school'
-
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    name = Column(String)
-    district = Column(String)
 
 
 class MAPTest(Base):
     """Model for tracking MAP test results
 
-    The MAP test is given three times a year.
-
-    Projected proficiencies are captured annually on a file that is sent three times a year.
-    Any new value will update the old.
+    Source: MAP Test
     """
     __tablename__ = 'map_test'
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    student_id = Column(Integer, ForeignKey('map_student.id'))
+    id = Column(Integer, primary_key=True, autoincrement='auto')
+    student_id = Column(Integer, ForeignKey('student.id'))
     trimester_id = Column(Integer, ForeignKey('trimester.id'))  # term
     discipline = Column(String)
 
@@ -58,18 +28,21 @@ class MAPTest(Base):
     sol_projected_proficiency = Column(Enum('Advanced', 'Proficient', 'Basic'))
 
 
-class MAPGrowth(Base):
+class MAPTestGrowth(Base):
     """Model for tracking growth in MAP scores from trimester to trimester
 
-    todo: at fall, fall to each season is captured as a projection
-    todo: at winter, fall to winter actuals at captured and winter to spring projections are captured
-    """
-    __tablename__ = 'map_growth'
+    Source: MAP Test
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    map_test_sitting_id = Column(Integer, ForeignKey('map_test.id'))
+    Actual values and projected values are collected three times a year so that projected values can be measured:
+    At fall, fall to winter and fall to spring are captured as projections
+    At winter, fall to winter is captured as an actual and winter to spring is captured as a projection
+    """
+    __tablename__ = 'map_test_growth'
+
+    id = Column(Integer, primary_key=True, autoincrement='auto')
+    map_test_id = Column(Integer, ForeignKey('map_test.id'))
     base_trimester_id = Column(Integer, ForeignKey('trimester.id'))
-    target_trimester_id = Column(Integer, ForeignKey('trimester.id'))
+    projected_trimester_id = Column(Integer, ForeignKey('trimester.id'))
 
     projected_growth = Column(Integer)
     observed_growth = Column(Integer)
@@ -80,11 +53,13 @@ class MAPGrowth(Base):
 class MAPTestGoal(Base):
     """Model to track MAP test goals
 
+    Source: MAP Test
+
     A student will have several of these per MAP test.
     """
     __tablename__ = 'map_test_goal'
 
-    id = Column(Integer, primary_key=True, autoincrement=True)
+    id = Column(Integer, primary_key=True, autoincrement='auto')
     map_test_id = Column(Integer, ForeignKey('map_test.id'))
 
     name = Column(String)
