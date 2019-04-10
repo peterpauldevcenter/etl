@@ -4,12 +4,14 @@ import datetime
 import sqlalchemy
 import etl
 import settings
+from etl.models.peter_paul_roster import StudentAnnualPeterPaulSummary
+from etl.models.report_card import SchoolAttendance, ReportCard
 from etl.models.student_demographics import School, Student, StudentDemographics, StudentAnnualDemographics
+from etl.models.timeseries import MarkingPeriod, SchoolYear
+from etl.views.peter_paul_roster import StudentAnnualPeterPaulSummaryListView
+from etl.views.report_card import SchoolAttendanceListView, ReportCardListView
 from etl.views.student_demographics import SchoolListView, StudentListView, StudentDemographicsListView, \
     StudentAnnualDemographicsListView
-from etl.models.report_card import SchoolAttendance, ReportCard
-from etl.views.report_card import SchoolAttendanceListView, ReportCardListView
-from etl.models.timeseries import MarkingPeriod, SchoolYear
 from etl import session
 from .context import PACKAGE_ROOT
 
@@ -162,3 +164,34 @@ def test_read_grades_from_report_card_file():
     assert grade.grade_raw == '91.48'
     assert grade.grade_letter == 'A'
     assert grade.grade_number == 91.48
+
+
+def test_read_annual_peter_paul_summary_from_roster_file():
+    test_data_file = get_test_data_file('Student_Roster_Test_Data.xlsx')
+    view_instance = StudentAnnualPeterPaulSummaryListView()
+    view_instance.post(test_data_file)
+    student = get_instance(Student, student_token=43)
+    school_year = get_instance(SchoolYear, school_year=2016)
+    summary = get_instance(StudentAnnualPeterPaulSummary, student_id=student.id, school_year_id=school_year.id)
+    assert summary.peter_paul_location.name == 'Central'
+    assert summary.attended_peter_paul_during_school_year is True
+    assert summary.attended_peter_paul_summer_promise is True
+    assert summary.did_not_complete_peter_paul_during_school_year is False
+    assert summary.growth_in_reading == 'No Growth'
+    assert summary.test_percentile_in_reading == 42
+    assert summary.met_national_norm_in_reading is False
+    assert summary.growth_in_math is None
+    assert summary.test_percentile_in_math == 42
+    assert summary.met_national_norm_in_math is False
+    school_year = get_instance(SchoolYear, school_year=2018)
+    summary = get_instance(StudentAnnualPeterPaulSummary, student_id=student.id, school_year_id=school_year.id)
+    assert summary.peter_paul_location.name == 'Central'
+    assert summary.attended_peter_paul_during_school_year is True
+    assert summary.attended_peter_paul_summer_promise is False
+    assert summary.did_not_complete_peter_paul_during_school_year is True
+    assert summary.growth_in_reading is None
+    assert summary.test_percentile_in_reading is None
+    assert summary.met_national_norm_in_reading is None
+    assert summary.growth_in_math is None
+    assert summary.test_percentile_in_math is None
+    assert summary.met_national_norm_in_math is None
