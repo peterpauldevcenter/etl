@@ -1,4 +1,5 @@
 from sqlalchemy import Column, Boolean, Integer, String, ForeignKey, Enum
+from sqlalchemy.orm import relationship
 from etl.models import Base
 
 
@@ -11,6 +12,7 @@ class PeterPaulLocation(Base):
 
     id = Column(Integer, primary_key=True, autoincrement='auto')
     name = Column(String)
+    student_annual_demographics = relationship('StudentAnnualDemographics')
 
 
 class StudentTermObservation(Base):
