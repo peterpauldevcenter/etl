@@ -41,6 +41,10 @@ class YouthSurveyConfigurationException(ExcelIngestionException):
     pass
 
 
+class YouthSurveyValidationException(ExcelIngestionException):
+    pass
+
+
 class WorksheetRunner:
     def __init__(self, worksheet: 'Worksheet', header=0, pk_col_index=0, fuzzy_threshold=75):
         data = list(worksheet.values)
@@ -111,7 +115,7 @@ class Question:
         val = headers[self.col_index].lower()
         ratio = fuzz.ratio(val, self.expected_header)
         if ratio < fuzz_threshold:
-            raise ExcelIngestionException(
+            raise YouthSurveyValidationException(
                 f'Found header value {val} did not exceed fuzzy match {self.expected_header} threshold of '
                 f'{fuzz_threshold}.'
             )
