@@ -21,6 +21,7 @@ class SchoolYear(Base):
     trimesters = relationship('Trimester')
     marking_periods = relationship('MarkingPeriod')
     student_annual_demographics = relationship('StudentAnnualDemographics')
+    student_annual_peter_paul_summary = relationship('StudentAnnualPeterPaulSummary')
 
     def __init__(self, school_year: int):
         self.school_year = school_year

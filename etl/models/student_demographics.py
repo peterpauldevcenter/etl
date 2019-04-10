@@ -47,6 +47,7 @@ class Student(Base):
     student_annual_demographics = relationship('StudentAnnualDemographics')
     school_attendance = relationship('SchoolAttendance')
     report_cards = relationship('ReportCard')
+    student_annual_peter_paul_summary = relationship('StudentAnnualPeterPaulSummary')
 
     def __init__(self, student_token: int):
         self.student_token = student_token
@@ -76,6 +77,9 @@ class StudentDemographics(Base):
 
     # Student Roster
     peter_paul_enrollment_date = Column(DateTime)
+    peter_paul_location_id = Column(Integer, ForeignKey('peter_paul_location.id'))
+    peter_paul_location = relationship('PeterPaulLocation', back_populates='student_demographics')
+
 #    term_observable = relationship('StudentTermObservation', back_populates='student_term_observation')
 
     def __init__(self, student_token: int):
@@ -100,8 +104,8 @@ class StudentAnnualDemographics(Base):
     school_year = relationship('SchoolYear', back_populates='student_annual_demographics')
 
     # Student Demographics
-#    peter_paul_location_id = Column(Integer, ForeignKey('peter_paul_location.id'))
-#    peter_paul_location = relationship('PeterPaulLocation', back_populates='student_annual_demographics')
+    peter_paul_location_id = Column(Integer, ForeignKey('peter_paul_location.id'))
+    peter_paul_location = relationship('PeterPaulLocation', back_populates='student_annual_demographics')
     family_size = Column(Integer)
     household_type = Column(String)
     family_setting = Column(String)
