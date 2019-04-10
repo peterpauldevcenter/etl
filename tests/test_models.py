@@ -2,6 +2,7 @@ import sqlalchemy
 import os
 from etl.models.timeseries import SchoolYear, Semester, Trimester, MarkingPeriod
 from etl.models.student_demographics import School, Student, StudentDemographics, StudentAnnualDemographics
+from etl.models.report_card import SchoolAttendance, ReportCard
 import etl
 import settings
 
@@ -95,3 +96,32 @@ def test_add_student_annual_demographics():
     assert new_instance.family_size == 100
     assert new_instance.student.student_token == 12345
     assert new_instance.school_year.school_year == 2018
+
+
+def test_add_school_attendance():
+    model = SchoolAttendance
+    create_instance(model, student_token=12345, school_year=2018, marking_period='MP3')
+    student = get_instance(Student, student_token=12345)
+    school_year = get_instance(SchoolYear, school_year=2018)
+    marking_period = get_instance(MarkingPeriod, school_year_id=school_year.id, name='MP3')
+    new_instance = get_instance(model, student_id=student.id, marking_period_id=marking_period.id)
+    new_instance.days_absent = 100
+    assert new_instance.days_absent == 100
+    assert new_instance.student.student_token == 12345
+    assert new_instance.marking_period.school_year.school_year == 2018
+    assert new_instance.marking_period.name == 'MP3'
+
+
+def test_add_report_card():
+    model = ReportCard
+    create_instance(model, student_token=12345, school_year=2018, marking_period='MP3', subject='Science')
+    student = get_instance(Student, student_token=12345)
+    school_year = get_instance(SchoolYear, school_year=2018)
+    marking_period = get_instance(MarkingPeriod, school_year_id=school_year.id, name='MP3')
+    new_instance = get_instance(model, student_id=student.id, marking_period_id=marking_period.id, subject='Science')
+    new_instance.grade_raw = 98
+    assert new_instance.grade_raw == 98
+    assert new_instance.student.student_token == 12345
+    assert new_instance.marking_period.school_year.school_year == 2018
+    assert new_instance.marking_period.name == 'MP3'
+    assert new_instance.subject == 'Science'

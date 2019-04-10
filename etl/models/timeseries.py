@@ -89,6 +89,8 @@ class MarkingPeriod(Base):
     school_year = relationship('SchoolYear', back_populates='marking_periods')
     name = Column(String)
     time_series_sequence = Column(Integer)
+    school_attendance = relationship('SchoolAttendance')
+    report_cards = relationship('ReportCard')
 
     def __init__(self, school_year: int, name: str):
         self.school_year = get_or_create(SchoolYear, school_year=school_year)

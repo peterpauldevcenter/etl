@@ -45,6 +45,8 @@ class Student(Base):
     date_of_birth = Column(Date)
     student_demographics = relationship('StudentDemographics')
     student_annual_demographics = relationship('StudentAnnualDemographics')
+    school_attendance = relationship('SchoolAttendance')
+    report_cards = relationship('ReportCard')
 
     def __init__(self, student_token: int):
         self.student_token = student_token

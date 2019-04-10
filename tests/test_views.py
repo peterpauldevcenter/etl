@@ -8,7 +8,7 @@ from etl.models.student_demographics import School, Student, StudentDemographics
 from etl.views.student_demographics import SchoolListView, StudentListView, StudentDemographicsListView, \
     StudentAnnualDemographicsListView
 from etl.models.report_card import SchoolAttendance, ReportCard
-from etl.views.report_card import SchoolAttendanceListView
+from etl.views.report_card import SchoolAttendanceListView, ReportCardListView
 from etl.models.timeseries import MarkingPeriod, SchoolYear
 from etl import session
 from .context import PACKAGE_ROOT
@@ -129,7 +129,7 @@ def test_read_school_attendence_from_report_card_file():
 
 def test_read_grades_from_report_card_file():
     test_data_file = get_test_data_file('Report_Card_Test_Data.xlsx')
-    view_instance = SchoolAttendanceListView()
+    view_instance = ReportCardListView()
     view_instance.post(test_data_file)
     student = get_instance(Student, student_token=5)
     school_year = get_instance(SchoolYear, school_year=2019)
