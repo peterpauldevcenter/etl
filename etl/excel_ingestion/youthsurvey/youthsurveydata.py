@@ -4,8 +4,8 @@ from collections import namedtuple
 
 from fuzzywuzzy import fuzz
 
-from etl.excel_ingestion.contrib import excel_column_alpha_to_index, ExcelIngestionException
-from etl.excel_ingestion.transformations import (
+from etl.excel_ingestion.youthsurvey.contrib import excel_column_alpha_to_index, ExcelIngestionException
+from etl.excel_ingestion.youthsurvey.transformations import (
     ScaleTransformation, InverseScaleTransformation, AgreementTransformation, ExpectationTransformation,
     GradeStringToIntTransformation
 )
@@ -131,7 +131,7 @@ class Question:
 
 
 def get_questions_from_json() -> 'List[QuestionConfigTuple]':
-    file = get_pkg_resource_path('etl.excel_ingestion', 'youthsurveyconfig.json')
+    file = get_pkg_resource_path('etl.excel_ingestion.youthsurvey', 'youthsurveyconfig.json')
     data = json.loads(file.read_text())
     return [QuestionConfigTuple(**obj) for obj in data]
 

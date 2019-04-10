@@ -7,10 +7,10 @@ import abc
 import re
 from typing import TYPE_CHECKING
 
-from etl.excel_ingestion.contrib import ExcelIngestionException
+from etl.excel_ingestion.youthsurvey.contrib import ExcelIngestionException
 
 if TYPE_CHECKING:
-    from etl.excel_ingestion.youthsurveydata import Question, WorksheetRunner
+    from etl.excel_ingestion.youthsurvey.youthsurveydata import Question, WorksheetRunner
     from typing import Any
 
 
