@@ -1,6 +1,17 @@
 import pandas
 import pathlib
-from etl.views import session, engine
+from etl import session, engine
+
+
+def get_or_create(model, **kwargs):
+    instance = session.query(model).filter_by(**kwargs).first()
+    if instance is None:
+        instance = model(**kwargs)
+        session.add(instance)
+        session.commit()
+        return instance
+    else:
+        return instance
 
 
 def execute_sql(sql: str) -> list:
@@ -22,7 +33,6 @@ def create_stage_table_from_file(file: pathlib.Path) -> str:
         file: Excel file to be read in as the staging table
 
     Returns: the name of the staging table, which should be the file name with 'stage_' prepended to it
-
     """
     table_name = f'stage_{file.name}'
     df = pandas.read_excel(file.absolute())
