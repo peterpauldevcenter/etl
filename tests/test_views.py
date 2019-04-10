@@ -7,6 +7,9 @@ import settings
 from etl.models.student_demographics import School, Student, StudentDemographics, StudentAnnualDemographics
 from etl.views.student_demographics import SchoolListView, StudentListView, StudentDemographicsListView, \
     StudentAnnualDemographicsListView
+from etl.models.report_card import SchoolAttendance, ReportCard
+from etl.views.report_card import SchoolAttendanceListView
+from etl.models.timeseries import MarkingPeriod, SchoolYear
 from etl import session
 from .context import PACKAGE_ROOT
 
@@ -102,3 +105,53 @@ def test_read_student_annual_demographics_from_report_card_file():
     assert student_annual_demographics.individualized_education_plan_indicator is False
 
 
+def test_read_school_attendence_from_report_card_file():
+    test_data_file = get_test_data_file('Report_Card_Test_Data.xlsx')
+    view_instance = SchoolAttendanceListView()
+    view_instance.post(test_data_file)
+    student = get_instance(Student, student_token=6)
+    school_year = get_instance(SchoolYear, school_year=2019)
+    marking_period = get_instance(MarkingPeriod, name='MP1', school_year_id = school_year.id)
+    attendance = get_instance(SchoolAttendance, student_id=student.id, marking_period_id=marking_period.id)
+    assert attendance.days_absent == 1
+    assert attendance.days_tardy == 17
+    assert attendance.days_present == 43
+    assert attendance.days_suspended == 0
+    assert attendance.suspension_reason is None
+    marking_period = get_instance(MarkingPeriod, name='MP2', school_year_id = school_year.id)
+    attendance = get_instance(SchoolAttendance, student_id=student.id, marking_period_id=marking_period.id)
+    assert attendance.days_absent == 2
+    assert attendance.days_tardy == 19
+    assert attendance.days_present == 43
+    assert attendance.days_suspended == 3
+    assert attendance.suspension_reason == 'Jib Jabbin'
+
+
+def test_read_grades_from_report_card_file():
+    test_data_file = get_test_data_file('Report_Card_Test_Data.xlsx')
+    view_instance = SchoolAttendanceListView()
+    view_instance.post(test_data_file)
+    student = get_instance(Student, student_token=5)
+    school_year = get_instance(SchoolYear, school_year=2019)
+    marking_period = get_instance(MarkingPeriod, name='MP1', school_year_id = school_year.id)
+    grade = get_instance(StudentAnnualDemographics, student_id=student.id, marking_period_id=marking_period.id,
+                         subject='3rd Grade Mathematics')
+    assert grade.grade_raw == 'C'
+    assert grade.grade_letter == 'C'
+    assert grade.grade_number == 70
+    grade = get_instance(StudentAnnualDemographics, student_id=student.id, marking_period_id=marking_period.id,
+                         subject='3rd Grade Language Arts')
+    assert grade.grade_raw == 'A'
+    assert grade.grade_letter == 'A'
+    assert grade.grade_number == 90
+    marking_period = get_instance(MarkingPeriod, name='MP2', school_year_id = school_year.id)
+    grade = get_instance(StudentAnnualDemographics, student_id=student.id, marking_period_id=marking_period.id,
+                         subject='3rd Grade Mathematics')
+    assert grade.grade_raw == '84'
+    assert grade.grade_letter == 'B'
+    assert grade.grade_number == 84
+    grade = get_instance(StudentAnnualDemographics, student_id=student.id, marking_period_id=marking_period.id,
+                         subject='3rd Grade Language Arts')
+    assert grade.grade_raw == '91.48'
+    assert grade.grade_letter == 'A'
+    assert grade.grade_number == 91.48
