@@ -29,6 +29,13 @@ def setup_module():
     etl.models.Base.metadata.create_all(engine)
 
 
+def teardown_module():
+    try:
+        os.remove(settings.DATABASE)
+    except OSError:
+        pass
+
+
 def get_test_data_file(file_name: str):
     return PACKAGE_ROOT / pathlib.Path(f'static/{file_name}')
 
@@ -134,23 +141,23 @@ def test_read_grades_from_report_card_file():
     student = get_instance(Student, student_token=5)
     school_year = get_instance(SchoolYear, school_year=2019)
     marking_period = get_instance(MarkingPeriod, name='MP1', school_year_id = school_year.id)
-    grade = get_instance(StudentAnnualDemographics, student_id=student.id, marking_period_id=marking_period.id,
+    grade = get_instance(ReportCard, student_id=student.id, marking_period_id=marking_period.id,
                          subject='3rd Grade Mathematics')
     assert grade.grade_raw == 'C'
     assert grade.grade_letter == 'C'
     assert grade.grade_number == 70
-    grade = get_instance(StudentAnnualDemographics, student_id=student.id, marking_period_id=marking_period.id,
+    grade = get_instance(ReportCard, student_id=student.id, marking_period_id=marking_period.id,
                          subject='3rd Grade Language Arts')
     assert grade.grade_raw == 'A'
     assert grade.grade_letter == 'A'
     assert grade.grade_number == 90
     marking_period = get_instance(MarkingPeriod, name='MP2', school_year_id = school_year.id)
-    grade = get_instance(StudentAnnualDemographics, student_id=student.id, marking_period_id=marking_period.id,
+    grade = get_instance(ReportCard, student_id=student.id, marking_period_id=marking_period.id,
                          subject='3rd Grade Mathematics')
     assert grade.grade_raw == '84'
     assert grade.grade_letter == 'B'
     assert grade.grade_number == 84
-    grade = get_instance(StudentAnnualDemographics, student_id=student.id, marking_period_id=marking_period.id,
+    grade = get_instance(ReportCard, student_id=student.id, marking_period_id=marking_period.id,
                          subject='3rd Grade Language Arts')
     assert grade.grade_raw == '91.48'
     assert grade.grade_letter == 'A'

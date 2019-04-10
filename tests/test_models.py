@@ -29,6 +29,13 @@ def setup_module():
     etl.models.Base.metadata.create_all(engine)
 
 
+def teardown_module():
+    try:
+        os.remove(settings.DATABASE)
+    except OSError:
+        pass
+
+
 def test_add_school_year():
     model = SchoolYear
     create_instance(model, school_year=2019)
