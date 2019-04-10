@@ -2,3 +2,5 @@ sqlalchemy
 pandas
 pytest
 xlrd
+sphinx
+sphinx-autodoc-typehints
