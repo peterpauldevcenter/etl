@@ -107,7 +107,7 @@ class ReportCardListView:
     """View to feed Report Card data into the Report Card model
 
     todo: move grade translation out of the model and into the view, also verify the translation
-    todo: pivot a different way, pandas groups by column names, so maybe subject first instead of mp
+    todo: this is ugly but effective, look at making it more readable/expressive
     """
 
     model = ReportCard
@@ -116,67 +116,131 @@ class ReportCardListView:
         df = pandas.read_excel(report_card_file.absolute())
         columns_without_subject = ['MarkelID', 'SUBJECT', 'GRADE']
 
-        subject_0 = df[['MarkelID', 'SUBJECT', 'GRADE MP1']].drop_duplicates()
-        subject_1 = df[['MarkelID', 'SUBJECT.1', 'GRADE MP1.1']].drop_duplicates()
-        subject_2 = df[['MarkelID', 'SUBJECT.2', 'GRADE MP1.2']].drop_duplicates()
-        subject_3 = df[['MarkelID', 'SUBJECT.3', 'GRADE MP1.3']].drop_duplicates()
-        subject_4 = df[['MarkelID', 'SUBJECT.4', 'GRADE MP1.4']].drop_duplicates()
-        subject_5 = df[['MarkelID', 'SUBJECT.5', 'GRADE MP1.5']].drop_duplicates()
-        subject_6 = df[['MarkelID', 'SUBJECT.6', 'GRADE MP1.6']].drop_duplicates()
-        subject_7 = df[['MarkelID', 'SUBJECT.7', 'GRADE MP1.7']].drop_duplicates()
-        subject_8 = df[['MarkelID', 'SUBJECT.8', 'GRADE MP1.8']].drop_duplicates()
-        subject_9 = df[['MarkelID', 'SUBJECT.9', 'GRADE MP1.9']].drop_duplicates()
-        subject_mp1 = subject_0.append(subject_1).append(subject_2).append(subject_3).append(subject_4)\
-            .append(subject_5).append(subject_6).append(subject_7).append(subject_8).append(subject_9).drop_duplicates()
-        subject_mp1.columns = columns_without_subject
-        subject_mp1['MP'] = 'MP1'
+        subjects_mp1 = df[['MarkelID', 'SUBJECT', 'GRADE MP1']].drop_duplicates()
+        subjects_mp1.columns = columns_without_subject
+        subject = df[['MarkelID', 'SUBJECT.1', 'GRADE MP1.1']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp1 = subjects_mp1.append(subject)
+        subject = df[['MarkelID', 'SUBJECT.2', 'GRADE MP1.2']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp1 = subjects_mp1.append(subject)
+        subject = df[['MarkelID', 'SUBJECT.3', 'GRADE MP1.3']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp1 = subjects_mp1.append(subject)
+        subject = df[['MarkelID', 'SUBJECT.4', 'GRADE MP1.4']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp1 = subjects_mp1.append(subject)
+        subject = df[['MarkelID', 'SUBJECT.5', 'GRADE MP1.5']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp1 = subjects_mp1.append(subject)
+        subject = df[['MarkelID', 'SUBJECT.6', 'GRADE MP1.6']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp1 = subjects_mp1.append(subject)
+        subject = df[['MarkelID', 'SUBJECT.7', 'GRADE MP1.7']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp1 = subjects_mp1.append(subject)
+        subject = df[['MarkelID', 'SUBJECT.8', 'GRADE MP1.8']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp1 = subjects_mp1.append(subject)
+        subject = df[['MarkelID', 'SUBJECT.9', 'GRADE MP1.9']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp1 = subjects_mp1.append(subject)
+        subjects_mp1['MP'] = 'MP1'
 
-        subject_0 = df[['MarkelID', 'SUBJECT', 'GRADE MP2']].drop_duplicates()
-        subject_1 = df[['MarkelID', 'SUBJECT.1', 'GRADE MP2.1']].drop_duplicates()
-        subject_2 = df[['MarkelID', 'SUBJECT.2', 'GRADE MP2.2']].drop_duplicates()
-        subject_3 = df[['MarkelID', 'SUBJECT.3', 'GRADE MP2.3']].drop_duplicates()
-        subject_4 = df[['MarkelID', 'SUBJECT.4', 'GRADE MP2.4']].drop_duplicates()
-        subject_5 = df[['MarkelID', 'SUBJECT.5', 'GRADE MP2.5']].drop_duplicates()
-        subject_6 = df[['MarkelID', 'SUBJECT.6', 'GRADE MP2.6']].drop_duplicates()
-        subject_7 = df[['MarkelID', 'SUBJECT.7', 'GRADE MP2.7']].drop_duplicates()
-        subject_8 = df[['MarkelID', 'SUBJECT.8', 'GRADE MP2.8']].drop_duplicates()
-        subject_9 = df[['MarkelID', 'SUBJECT.9', 'GRADE MP2.9']].drop_duplicates()
-        subject_mp2 = subject_0.append(subject_1).append(subject_2).append(subject_3).append(subject_4)\
-            .append(subject_5).append(subject_6).append(subject_7).append(subject_8).append(subject_9).drop_duplicates()
-        subject_mp2.columns = columns_without_subject
-        subject_mp2['MP'] = 'MP2'
+        subjects_mp2 = df[['MarkelID', 'SUBJECT', 'GRADE MP2']].drop_duplicates()
+        subjects_mp2.columns = columns_without_subject
+        subject = df[['MarkelID', 'SUBJECT.1', 'GRADE MP2.1']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp2 = subjects_mp2.append(subject)
+        subject = df[['MarkelID', 'SUBJECT.2', 'GRADE MP2.2']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp2 = subjects_mp2.append(subject)
+        subject = df[['MarkelID', 'SUBJECT.3', 'GRADE MP2.3']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp2 = subjects_mp2.append(subject)
+        subject = df[['MarkelID', 'SUBJECT.4', 'GRADE MP2.4']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp2 = subjects_mp2.append(subject)
+        subject = df[['MarkelID', 'SUBJECT.5', 'GRADE MP2.5']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp2 = subjects_mp2.append(subject)
+        subject = df[['MarkelID', 'SUBJECT.6', 'GRADE MP2.6']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp2 = subjects_mp2.append(subject)
+        subject = df[['MarkelID', 'SUBJECT.7', 'GRADE MP2.7']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp2 = subjects_mp2.append(subject)
+        subject = df[['MarkelID', 'SUBJECT.8', 'GRADE MP2.8']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp2 = subjects_mp2.append(subject)
+        subject = df[['MarkelID', 'SUBJECT.9', 'GRADE MP2.9']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp2 = subjects_mp2.append(subject)
+        subjects_mp2['MP'] = 'MP2'
 
-        subject_0 = df[['MarkelID', 'SUBJECT', 'GRADE MP3']].drop_duplicates()
-        subject_1 = df[['MarkelID', 'SUBJECT.1', 'GRADE MP3.1']].drop_duplicates()
-        subject_2 = df[['MarkelID', 'SUBJECT.2', 'GRADE MP3.2']].drop_duplicates()
-        subject_3 = df[['MarkelID', 'SUBJECT.3', 'GRADE MP3.3']].drop_duplicates()
-        subject_4 = df[['MarkelID', 'SUBJECT.4', 'GRADE MP3.4']].drop_duplicates()
-        subject_5 = df[['MarkelID', 'SUBJECT.5', 'GRADE MP3.5']].drop_duplicates()
-        subject_6 = df[['MarkelID', 'SUBJECT.6', 'GRADE MP3.6']].drop_duplicates()
-        subject_7 = df[['MarkelID', 'SUBJECT.7', 'GRADE MP3.7']].drop_duplicates()
-        subject_8 = df[['MarkelID', 'SUBJECT.8', 'GRADE MP3.8']].drop_duplicates()
-        subject_9 = df[['MarkelID', 'SUBJECT.9', 'GRADE MP3.9']].drop_duplicates()
-        subject_mp3 = subject_0.append(subject_1).append(subject_2).append(subject_3).append(subject_4)\
-            .append(subject_5).append(subject_6).append(subject_7).append(subject_8).append(subject_9).drop_duplicates()
-        subject_mp3.columns = columns_without_subject
-        subject_mp3['MP'] = 'MP3'
+        subjects_mp3 = df[['MarkelID', 'SUBJECT', 'GRADE MP3']].drop_duplicates()
+        subjects_mp3.columns = columns_without_subject
+        subject = df[['MarkelID', 'SUBJECT.1', 'GRADE MP3.1']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp3 = subjects_mp3.append(subject)
+        subject = df[['MarkelID', 'SUBJECT.2', 'GRADE MP3.2']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp3 = subjects_mp3.append(subject)
+        subject = df[['MarkelID', 'SUBJECT.3', 'GRADE MP3.3']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp3 = subjects_mp3.append(subject)
+        subject = df[['MarkelID', 'SUBJECT.4', 'GRADE MP3.4']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp3 = subjects_mp3.append(subject)
+        subject = df[['MarkelID', 'SUBJECT.5', 'GRADE MP3.5']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp3 = subjects_mp3.append(subject)
+        subject = df[['MarkelID', 'SUBJECT.6', 'GRADE MP3.6']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp3 = subjects_mp3.append(subject)
+        subject = df[['MarkelID', 'SUBJECT.7', 'GRADE MP3.7']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp3 = subjects_mp3.append(subject)
+        subject = df[['MarkelID', 'SUBJECT.8', 'GRADE MP3.8']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp3 = subjects_mp3.append(subject)
+        subject = df[['MarkelID', 'SUBJECT.9', 'GRADE MP3.9']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp3 = subjects_mp3.append(subject)
+        subjects_mp3['MP'] = 'MP3'
 
-        subject_0 = df[['MarkelID', 'SUBJECT', 'GRADE MP4']].drop_duplicates()
-        subject_1 = df[['MarkelID', 'SUBJECT.1', 'GRADE MP4.1']].drop_duplicates()
-        subject_2 = df[['MarkelID', 'SUBJECT.2', 'GRADE MP4.2']].drop_duplicates()
-        subject_3 = df[['MarkelID', 'SUBJECT.3', 'GRADE MP4.3']].drop_duplicates()
-        subject_4 = df[['MarkelID', 'SUBJECT.4', 'GRADE MP4.4']].drop_duplicates()
-        subject_5 = df[['MarkelID', 'SUBJECT.5', 'GRADE MP4.5']].drop_duplicates()
-        subject_6 = df[['MarkelID', 'SUBJECT.6', 'GRADE MP4.6']].drop_duplicates()
-        subject_7 = df[['MarkelID', 'SUBJECT.7', 'GRADE MP4.7']].drop_duplicates()
-        subject_8 = df[['MarkelID', 'SUBJECT.8', 'GRADE MP4.8']].drop_duplicates()
-        subject_9 = df[['MarkelID', 'SUBJECT.9', 'GRADE MP4.9']].drop_duplicates()
-        subject_mp4 = subject_0.append(subject_1).append(subject_2).append(subject_3).append(subject_4)\
-            .append(subject_5).append(subject_6).append(subject_7).append(subject_8).append(subject_9).drop_duplicates()
-        subject_mp4.columns = columns_without_subject
-        subject_mp4['MP'] = 'MP4'
+        subjects_mp4 = df[['MarkelID', 'SUBJECT', 'GRADE MP4']].drop_duplicates()
+        subjects_mp4.columns = columns_without_subject
+        subject = df[['MarkelID', 'SUBJECT.1', 'GRADE MP4.1']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp4 = subjects_mp4.append(subject)
+        subject = df[['MarkelID', 'SUBJECT.2', 'GRADE MP4.2']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp4 = subjects_mp4.append(subject)
+        subject = df[['MarkelID', 'SUBJECT.3', 'GRADE MP4.3']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp4 = subjects_mp4.append(subject)
+        subject = df[['MarkelID', 'SUBJECT.4', 'GRADE MP4.4']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp4 = subjects_mp4.append(subject)
+        subject = df[['MarkelID', 'SUBJECT.5', 'GRADE MP4.5']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp4 = subjects_mp4.append(subject)
+        subject = df[['MarkelID', 'SUBJECT.6', 'GRADE MP4.6']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp4 = subjects_mp4.append(subject)
+        subject = df[['MarkelID', 'SUBJECT.7', 'GRADE MP4.7']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp4 = subjects_mp4.append(subject)
+        subject = df[['MarkelID', 'SUBJECT.8', 'GRADE MP4.8']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp4 = subjects_mp4.append(subject)
+        subject = df[['MarkelID', 'SUBJECT.9', 'GRADE MP4.9']].drop_duplicates()
+        subject.columns = columns_without_subject
+        subjects_mp4 = subjects_mp4.append(subject)
+        subjects_mp4['MP'] = 'MP4'
 
-        subjects = subject_mp1.append(subject_mp2).append(subject_mp3).append(subject_mp4)
+        subjects = subjects_mp1.append(subjects_mp2).append(subjects_mp3).append(subjects_mp4)
         for index, row in subjects.iterrows():
             student_token = row['MarkelID']
             marking_period_name = row['MP']
