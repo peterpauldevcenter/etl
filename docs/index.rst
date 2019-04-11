@@ -11,36 +11,58 @@ Welcome to Peter Paul Database's documentation!
    :caption: Contents:
 
 Data Models
-###########
+===========
+
+MAP Test
+########
 .. automodule:: etl.models.map_testing
    :members:
 
+Peter Paul Roster
+#################
 .. automodule:: etl.models.peter_paul_roster
    :members:
 
+Questionnaire
+#############
 .. automodule:: etl.models.questionnaire
    :members:
 
+RPS Report Card
+###############
 .. automodule:: etl.models.report_card
    :members:
 
+Student Demographics
+####################
 .. automodule:: etl.models.student_demographics
    :members:
 
+Time Series
+###########
 .. automodule:: etl.models.timeseries
    :members:
 
 Extract Logic
-#############
+=============
+
+MAP Test
+########
 .. automodule:: etl.views.map_testing
    :members:
 
+Peter Paul Roster
+#################
 .. automodule:: etl.views.peter_paul_roster
    :members:
 
+RPS Report Card
+###############
 .. automodule:: etl.views.report_card
    :members:
 
+Student Demographics
+####################
 .. automodule:: etl.views.student_demographics
    :members:
 

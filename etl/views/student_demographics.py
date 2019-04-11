@@ -170,6 +170,8 @@ class StudentAnnualDemographicsListView:
                 disability = True
             elif disability == 'None':
                 disability = False
+            else:
+                disability = None
             promise_family_network = row['StudentPFN [PFN Student]']
 
             student = get_or_create_student(student_token)

@@ -261,6 +261,9 @@ class ReportCardListView:
                 report_card.grade_letter = grade_raw
                 grades = {'A': 90, 'B': 80, 'C': 70, 'D': 60, 'F': 50, 'P': 70}
                 report_card.grade_number = grades[grade_raw]
+            elif type(grade_raw) == str:
+                report_card.grade_letter = None
+                report_card.grade_number = None
             else:
                 report_card.grade_number = grade_raw
                 if grade_raw >= 90:

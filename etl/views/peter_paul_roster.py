@@ -228,19 +228,19 @@ class StudentAnnualPeterPaulSummaryListView:
                 growth_in_reading = None
             elif type(row['GROWTH READING ANY']) != str:
                 growth_in_reading = None
-            elif row['GROWTH READING ANY'].lower() == 'no':
+            elif row['GROWTH READING ANY'].lower() != 'yes':
                 growth_in_reading = 'No Growth'
-            elif row['GROWTH READING ANY'].lower() == 'yes' and row['GROWTH READING MET'] is None:
+            elif row['GROWTH READING MET'] is None:
                 growth_in_reading = 'Below Projection'
-            elif row['GROWTH READING ANY'].lower() == 'yes' and type(row['GROWTH READING MET']) != str:
+            elif type(row['GROWTH READING MET']) != str:
                 growth_in_reading = 'Below Projection'
-            elif row['GROWTH READING ANY'].lower() == 'yes' and row['GROWTH READING MET'].lower() == 'no':
+            elif row['GROWTH READING MET'].lower() != 'yes':
                 growth_in_reading = 'Below Projection'
-            elif row['GROWTH READING MET'].lower() == 'yes' and row['GROWTH READING EXCEED'] is None:
+            elif row['GROWTH READING EXCEED'] is None:
                 growth_in_reading = 'Met Projection'
-            elif row['GROWTH READING MET'].lower() == 'yes' and type(row['GROWTH READING EXCEED']) != str:
+            elif type(row['GROWTH READING EXCEED']) != str:
                 growth_in_reading = 'Met Projection'
-            elif row['GROWTH READING MET'].lower() == 'yes' and row['GROWTH READING EXCEED'].lower() == 'no':
+            elif row['GROWTH READING EXCEED'].lower() != 'yes':
                 growth_in_reading = 'Met Projection'
             elif row['GROWTH READING EXCEED'].lower() == 'yes':
                 growth_in_reading = 'Exceeded Projection'
@@ -264,19 +264,19 @@ class StudentAnnualPeterPaulSummaryListView:
                 growth_in_math = None
             elif type(row['GROWTH MATH ANY']) != str:
                 growth_in_math = None
-            elif row['GROWTH MATH ANY'].lower() == 'no':
+            elif row['GROWTH MATH ANY'].lower() != 'yes':
                 growth_in_math = 'No Growth'
-            elif row['GROWTH MATH ANY'].lower() == 'yes' and row['GROWTH MATH MET'] is None:
+            elif row['GROWTH MATH MET'] is None:
                 growth_in_math = 'Below Projection'
-            elif row['GROWTH MATH ANY'].lower() == 'yes' and type(row['GROWTH MATH MET']) != str:
+            elif type(row['GROWTH MATH MET']) != str:
                 growth_in_math = 'Below Projection'
-            elif row['GROWTH MATH ANY'].lower() == 'yes' and row['GROWTH MATH MET'].lower() == 'no':
+            elif row['GROWTH MATH MET'].lower() != 'yes':
                 growth_in_math = 'Below Projection'
-            elif row['GROWTH MATH MET'].lower() == 'yes' and row['GROWTH MATH EXCEED'].lower() is None:
+            elif row['GROWTH MATH EXCEED'] is None:
                 growth_in_math = 'Met Projection'
-            elif row['GROWTH MATH MET'].lower() == 'yes' and type(row['GROWTH MATH EXCEED']) != str:
+            elif type(row['GROWTH MATH EXCEED']) != str:
                 growth_in_math = 'Met Projection'
-            elif row['GROWTH MATH MET'].lower() == 'yes' and row['GROWTH MATH EXCEED'].lower() == 'no':
+            elif row['GROWTH MATH EXCEED'].lower() != 'yes':
                 growth_in_math = 'Met Projection'
             elif row['GROWTH MATH EXCEED'].lower() == 'yes':
                 growth_in_math = 'Exceeded Projection'

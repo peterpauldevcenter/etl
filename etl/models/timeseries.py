@@ -26,7 +26,7 @@ class SchoolYear(Base):
 
     def __init__(self, school_year: int):
         self.school_year = school_year
-        self.start_year = school_year - 1
+        self.start_year = int(school_year) - 1
         self.name = f'{self.start_year}-{self.school_year}'
 
 
