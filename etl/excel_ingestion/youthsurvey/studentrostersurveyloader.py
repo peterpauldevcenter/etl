@@ -1,3 +1,6 @@
+"""
+I am embarrassed by all of this code and would never deploy it if I had more than a day and wasn't in a rush. -Jonny
+"""
 from typing import Dict, Type, AnyStr, Tuple
 
 from openpyxl import load_workbook
