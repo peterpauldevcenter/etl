@@ -1,3 +1,6 @@
+from typing import Tuple, Set
+
+
 class ExcelIngestionException(Exception):
     pass
 
@@ -30,3 +33,16 @@ def excel_column_alpha_to_index(column_alpha: str) -> int:
         val = letter_base_value * 26 ** index
         total = total + val
     return total
+
+
+def add_to_set_indicate_size_change(set_: set, element) -> Tuple[Set, bool]:
+    """Return the set and whether or not the element changed the size.
+
+    .. note::  There's probably a better way to do this...
+    """
+    size = len(set_)
+    added = True
+    set_.add(element)
+    if size == len(set_):
+        added = False
+    return set_, added
