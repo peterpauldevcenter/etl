@@ -61,13 +61,21 @@ def validate_and_get_question_metadata(data):
 
 def get_student_results(index: int,
                         question_metadata: Iterable[QuestionNamedTuple],
-                        data) -> Dict[AnyStr, List[Dict]]:
+                        data) -> 'Dict[AnyStr, Dict[AnyStr, List[Dict]]]':
     """Processes a row in the data set returning the students data.
 
     Args:
         index: The row to process
         question_metadata: The collection of QuestionNamedTuples
         data: The data set
+
+    Returns:
+        A dictionary whose key is the student id, and value is another dictionary where each
+        key '{season} {year}' contains a list of the questions answers for that biannual.
+
+        It will look like ``{student_id: {'spring 2018': [{question: text, answer: value}]}`` etc
+
+        Season will be lowercase.
     """
     row = data[index]
     student_token = str(row[0])
@@ -75,15 +83,29 @@ def get_student_results(index: int,
         raise YouthSurveyValidationException(
             f'No student token was found on the first column {index} row.'
         )
-    data = []
+    data = {}
+    ret = {student_token: data}
+
     for meta in question_metadata:
-        answer = row[meta.index]
-        result_nt = ResultNamedTuple(season=meta.season,
-                                     year=meta.year,
-                                     question=meta.question,
-                                     answer=answer)
-        data.append(result_nt._asdict())
-    return {student_token: data}
+        key = f'{meta.season.lower()} {meta.year}'
+        data.setdefault(key, [])
+        data[key].append({
+            'question': meta.question,
+            'answer': row[meta.index]
+        })
+    return ret
+
+
+def get_answer_for_question(season_year_record_collection, question_text):
+    """Given a list of seasion year records reutrn the answer for the question whose text matches.
+
+    Args:
+        season_year_record_collection: The list of question answer dictionaries returned by func:`get_student_results`
+        question_text: The question whose answer value to return.
+    """
+    for record in season_year_record_collection:
+        if record['question'] == question_text:
+            return record['answer']
 
 
 def get_season_year_question_from_header(header_value: str) -> dict:

@@ -1,5 +1,5 @@
 from etl.excel_ingestion.youthsurvey.youthsurveyhistorical import (
-    question_re, get_student_results, validate_and_get_question_metadata
+    question_re, get_student_results, validate_and_get_question_metadata, get_answer_for_question
 )
 from etl.resources import get_pkg_resource_path
 
@@ -35,21 +35,13 @@ def test_regex():
 
 
 def test_get_student_results():
+    """Check a known row and make sure the question for the season returns the expected test value."""
     wb = get_workbook('test_student_roster.xlsx')
     data = get_data(wb)
     question_metadata = validate_and_get_question_metadata(data)
     dictionary = get_student_results(1, question_metadata, data)
     answers = dictionary['78']
-    found = check_for_dict(answers,
-                           '2015',
-                           'Fall',
-                           'd. Is there an adult here who you will listen to and respect?',
-                           4)
-    assert found
-
-
-def check_for_dict(answers, year, season, question, answer):
-    for _, dictionary in enumerate(answers):
-        data = tuple(map(dictionary.get, 'year season question answer'.split()))
-        if data == (year, season, question, answer):
-            return dictionary
+    fall_2015_records = answers['fall 2015']
+    question_txt = 'd. Is there an adult here who you will listen to and respect?'
+    answer = get_answer_for_question(fall_2015_records, question_txt)
+    assert answer == 4
