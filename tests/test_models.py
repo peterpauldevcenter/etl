@@ -4,6 +4,7 @@ from etl.models.timeseries import SchoolYear, Semester, Trimester, MarkingPeriod
 from etl.models.student_demographics import School, Student, StudentDemographics, StudentAnnualDemographics
 from etl.models.report_card import SchoolAttendance, ReportCard
 from etl.models.peter_paul_roster import PeterPaulLocation, StudentAnnualPeterPaulSummary
+from etl.models.map_testing import MAPTestGoal, MAPTest, MAPTestGrowth
 import etl
 import settings
 
@@ -156,3 +157,57 @@ def test_add_peter_paul_location():
     session.commit()
     assert new_instance.name == 'Peter Paul (and Mary)'
 
+
+def test_add_map_test():
+    model = MAPTest
+    create_instance(model, student_token=42, school_year=2017, trimester='Winter', discipline='Sailing')
+    student = get_instance(Student, student_token=42)
+    school_year = get_instance(SchoolYear, school_year=2017)
+    trimester = get_instance(Trimester, school_year_id=school_year.id, name='Winter')
+    new_instance = get_instance(model, student_id=student.id, trimester_id=trimester.id, discipline='Sailing')
+    new_instance.rit_score = 4242
+    session.commit()
+    assert new_instance.rit_score == 4242
+    assert new_instance.trimester.school_year.school_year == 2017
+    assert new_instance.trimester.name == 'Winter'
+    assert new_instance.student.student_token == 42
+    assert new_instance.discipline == 'Sailing'
+
+
+def test_add_map_test_goal():
+    model = MAPTestGoal
+    create_instance(model, student_token=25, school_year=2005, trimester='Spring',
+                    discipline='Sailing', name='Seven Seas')
+    student = get_instance(Student, student_token=25)
+    school_year = get_instance(SchoolYear, school_year=2005)
+    trimester = get_instance(Trimester, school_year_id=school_year.id, name='Spring')
+    map_test = get_instance(MAPTest, student_id=student.id, trimester_id=trimester.id, discipline='Sailing')
+    new_instance = get_instance(model, map_test_id=map_test.id, name='Seven Seas')
+    new_instance.score = 1234
+    session.commit()
+    assert new_instance.score == 1234
+    assert new_instance.map_test.trimester.school_year.school_year == 2005
+    assert new_instance.map_test.trimester.name == 'Spring'
+    assert new_instance.map_test.student.student_token == 25
+    assert new_instance.map_test.discipline == 'Sailing'
+    assert new_instance.name == 'Seven Seas'
+
+
+def test_add_map_test_growth():
+    model = MAPTestGrowth
+    create_instance(model, student_token=42, discipline='Sailing', school_year=2017,
+                    base_trimester='Winter', projected_trimester='Spring')
+    student = get_instance(Student, student_token=42)
+    school_year = get_instance(SchoolYear, school_year=2017)
+    base_trimester = get_instance(Trimester, school_year_id=school_year.id, name='Winter')
+    projected_trimester = get_instance(Trimester, school_year_id=school_year.id, name='Spring')
+    new_instance = get_instance(model, student_id=student.id, discipline='Sailing',
+                                base_trimester_id=base_trimester.id, projected_trimester_id=projected_trimester.id)
+    new_instance.projected_growth = 10
+    session.commit()
+    assert new_instance.projected_growth == 10
+    assert new_instance.base_trimester.school_year.school_year == 2017
+    assert new_instance.base_trimester.name == 'Winter'
+    assert new_instance.projected_trimester.name == 'Spring'
+    assert new_instance.student.student_token == 42
+    assert new_instance.discipline == 'Sailing'

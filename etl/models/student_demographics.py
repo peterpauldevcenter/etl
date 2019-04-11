@@ -48,6 +48,8 @@ class Student(Base):
     school_attendance = relationship('SchoolAttendance')
     report_cards = relationship('ReportCard')
     student_annual_peter_paul_summary = relationship('StudentAnnualPeterPaulSummary')
+    map_tests = relationship('MAPTest')
+    map_test_growth = relationship('MAPTestGrowth')
 
     def __init__(self, student_token: int):
         self.student_token = student_token
@@ -67,20 +69,15 @@ class StudentDemographics(Base):
 
     # MAP Test
     ethnic_group = Column(String)
-
     # MAP Test or Student Demographics
     gender = Column(String)
-
     # Student Demographics
     year_of_birth = Column(Integer)
     race = Column(String)
-
     # Student Roster
     peter_paul_enrollment_date = Column(DateTime)
     peter_paul_location_id = Column(Integer, ForeignKey('peter_paul_location.id'))
     peter_paul_location = relationship('PeterPaulLocation', back_populates='student_demographics')
-
-#    term_observable = relationship('StudentTermObservation', back_populates='student_term_observation')
 
     def __init__(self, student_token: int):
         student = session.query(Student).filter_by(student_token=student_token).first()

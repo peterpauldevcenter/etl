@@ -195,3 +195,15 @@ def test_read_annual_peter_paul_summary_from_roster_file():
     assert summary.growth_in_math is None
     assert summary.test_percentile_in_math is None
     assert summary.met_national_norm_in_math is None
+
+
+def test_read_map_test_goals_from_map_test_file():
+    test_data_file = get_test_data_file('MAP_Test_Data.xlsx')
+    view_instance = StudentAnnualPeterPaulSummaryListView()
+    view_instance.post(test_data_file)
+    student = get_instance(Student, student_token=43)
+    school_year = get_instance(SchoolYear, school_year=2016)
+    summary = get_instance(StudentAnnualPeterPaulSummary, student_id=student.id, school_year_id=school_year.id)
+    assert summary.peter_paul_location.name == 'Central'
+    assert summary.attended_peter_paul_during_school_year is True
+    assert summary.attended_peter_paul_summer_promise is True

@@ -67,6 +67,7 @@ class Trimester(Base):
     school_year = relationship('SchoolYear', back_populates='trimesters')
     name = Column(String)
     time_series_sequence = Column(Integer)
+    map_tests = relationship('MAPTest')
 
     def __init__(self, school_year: int, name: str):
         self.school_year = get_or_create(SchoolYear, school_year=school_year)
