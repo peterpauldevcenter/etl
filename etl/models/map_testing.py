@@ -1,6 +1,9 @@
 """Records MAP Test results, goals, and growth projections.
 
 The MAP Test is given three times per year, during the Fall, Winter, and Spring of each school year.
+There is a Mathematics component, and a Reading component, as noted by the discipline.
+Goals and projections are produced for each component each trimester.
+Projections are validated against actuals as new scores are collected.
 """
 from sqlalchemy import Column, String, Integer, ForeignKey, Float, UniqueConstraint
 from sqlalchemy.orm import relationship
@@ -11,7 +14,7 @@ from etl import session
 
 
 class MAPTest(Base):
-    """Model for tracking MAP test results
+    """Model for tracking MAP test results by discipline
 
     Source: MAP Test
     """
@@ -57,7 +60,7 @@ class MAPTestGoal(Base):
 
     Source: MAP Test
 
-    A student will have several of these per MAP test.
+    A student will have up to ten of these per MAP test.
     """
     __tablename__ = 'map_test_goal'
     __table_args__ = (UniqueConstraint('map_test_id', 'name', name='uc__map_test__name'),)

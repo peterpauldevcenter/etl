@@ -4,10 +4,12 @@ import datetime
 import sqlalchemy
 import etl
 import settings
+from etl.models.map_testing import MAPTest, MAPTestGoal
 from etl.models.peter_paul_roster import StudentAnnualPeterPaulSummary
 from etl.models.report_card import SchoolAttendance, ReportCard
 from etl.models.student_demographics import School, Student, StudentDemographics, StudentAnnualDemographics
-from etl.models.timeseries import MarkingPeriod, SchoolYear
+from etl.models.timeseries import MarkingPeriod, SchoolYear, Trimester
+from etl.views.map_testing import MAPTestListView, MAPTestGoalListView
 from etl.views.peter_paul_roster import StudentAnnualPeterPaulSummaryListView
 from etl.views.report_card import SchoolAttendanceListView, ReportCardListView
 from etl.views.student_demographics import SchoolListView, StudentListView, StudentDemographicsListView, \
@@ -197,13 +199,44 @@ def test_read_annual_peter_paul_summary_from_roster_file():
     assert summary.met_national_norm_in_math is None
 
 
+def test_read_map_tests_from_map_test_file():
+    test_data_file = get_test_data_file('MAP_Test_Data.xlsx')
+    view_instance = MAPTestListView()
+    view_instance.post(test_data_file)
+    student = get_instance(Student, student_token=16)
+    school_year = get_instance(SchoolYear, school_year=2018)
+    trimester = get_instance(Trimester, school_year_id=school_year.id, name='Spring')
+    map_test = get_instance(MAPTest, student_id=student.id, trimester_id=trimester.id, discipline='Mathematics')
+    assert map_test.rit_score == 204
+    assert map_test.rit_score_standard_error == 3
+    assert map_test.rit_score_percentile == 14
+    assert map_test.percent_correct == 45
+    assert map_test.accommodation_category == 'Designated Features'
+    assert map_test.accommodation == 'Text-to-speech'
+    assert map_test.act_projected_proficiency == 'Not On Track'
+    assert map_test.sol_projected_proficiency == 'Basic'
+
+
 def test_read_map_test_goals_from_map_test_file():
     test_data_file = get_test_data_file('MAP_Test_Data.xlsx')
-    view_instance = StudentAnnualPeterPaulSummaryListView()
+    view_instance = MAPTestGoalListView()
     view_instance.post(test_data_file)
-    student = get_instance(Student, student_token=43)
-    school_year = get_instance(SchoolYear, school_year=2016)
-    summary = get_instance(StudentAnnualPeterPaulSummary, student_id=student.id, school_year_id=school_year.id)
-    assert summary.peter_paul_location.name == 'Central'
-    assert summary.attended_peter_paul_during_school_year is True
-    assert summary.attended_peter_paul_summer_promise is True
+    student = get_instance(Student, student_token=73)
+    print(student)
+    school_year = get_instance(SchoolYear, school_year=2018)
+    print(school_year)
+    trimester = get_instance(Trimester, school_year_id=school_year.id, name='Spring')
+    print(trimester)
+    map_test = get_instance(MAPTest, student_id=student.id, trimester_id=trimester.id, discipline='Mathematics')
+    print(map_test)
+    map_test_goal = get_instance(MAPTestGoal, map_test_id=map_test.id, name='Number and Number Sense')
+    print(map_test_goal)
+    assert map_test_goal.score == 254
+    assert map_test_goal.standard_error == 7.9
+    assert map_test_goal.range == '246-262'
+    assert map_test_goal.level == 'High'
+    map_test_goal = get_instance(MAPTestGoal, map_test_id=map_test.id, name='Computation and Estimation')
+    assert map_test_goal.score == 223
+    assert map_test_goal.standard_error == 7.1
+    assert map_test_goal.range == '216-230'
+    assert map_test_goal.level == 'LoAvg'
