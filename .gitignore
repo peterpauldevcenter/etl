@@ -1,5 +1,3 @@
-# Excel files
-*.xls*
 
 # SQLite db
 *.db
