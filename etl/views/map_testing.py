@@ -1,3 +1,7 @@
+"""Contains extract logic for MAP Test models
+
+todo: The logic for projected and observed growths from trimester to trimester has not be written yet.
+"""
 import pathlib
 import pandas
 from etl.models.map_testing import MAPTest, MAPTestGoal
@@ -58,11 +62,15 @@ def get_or_create_map_test_goal(map_test: MAPTest, name: str) -> MAPTestGoal:
 
 
 class MAPTestListView:
-    """View to feed MAP Test data into the MAP Test model"""
+    """View to feed MAP Test data into the MAP Test model
+
+    This extracts data at the same grain as the originating file.
+    """
 
     model = MAPTest
 
-    def post(self, map_test_file: pathlib.Path):
+    @staticmethod
+    def post(map_test_file: pathlib.Path):
         df = pandas.read_excel(map_test_file.absolute())
         map_tests = df[['MarkelID', 'TermName', 'Discipline', 'TestRITScore', 'TestStandardError', 'TestPercentile',
                         'PercentCorrect', 'AccommodationCategory', 'Accommodations', 'ProjectedProficiencyLevel1',
@@ -99,7 +107,10 @@ class MAPTestListView:
 
 
 class MAPTestGoalListView:
-    """View to feed MAP Test data into the MAP Test Goal model"""
+    """View to feed MAP Test data into the MAP Test Goal model
+
+    This pivots the eight goals in the extract file back to a transactional structure
+    """
 
     model = MAPTestGoal
 

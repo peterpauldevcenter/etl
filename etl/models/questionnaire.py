@@ -7,6 +7,8 @@ The component sections roll up to the questionnaire.
 
 .. warning::
 
+    These models are currently not being populated.
+
     During ETL two questions need to be reversed so the semi-Likert section averages
     compute properly. ie. 4 becomes 1, 3 becomes 2, etc
 
@@ -98,8 +100,6 @@ class Retrospective(Base):
     """Restrospective questions are independent, only for subjective analysis
     They are not used to create a scaled rating. Only asked on Spring survey.
     Fall survey will have nulls.
-
-    todo: Figure out nullables in sqlalchemy
     """
     __tablename__ = 'student_experience_questionnaire_retrospective'
 

@@ -32,6 +32,9 @@ Data Models
 
 Extract Logic
 #############
+.. automodule:: etl.views.map_testing
+   :members:
+
 .. automodule:: etl.views.peter_paul_roster
    :members:
 

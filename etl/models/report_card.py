@@ -1,3 +1,4 @@
+"""Report card data and school attendance data from Richmond Public Schools"""
 from sqlalchemy import Column, String, Integer, Float, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship
 from etl.models import Base

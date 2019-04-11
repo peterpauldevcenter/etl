@@ -47,12 +47,14 @@ def get_or_create_annual_summary(student: Student, school_year: SchoolYear) -> S
 class StudentAnnualPeterPaulSummaryListView:
     """View to feed Student Roster data into the Peter Paul Annual Summary model
 
-    todo: and you thought the other one was ugly
+    This extract pivots years back to a transactional structure and does some light transformation
+    to combine things like reading and math growth into one column.
     """
 
     model = StudentAnnualPeterPaulSummary
 
-    def post(self, student_roster_file: pathlib.Path):
+    @staticmethod
+    def post(student_roster_file: pathlib.Path):
         df = pandas.read_excel(student_roster_file.absolute())
 
         annual_summary_2019 = df[['MarkelID', 'Peter Paul Location (2019)', 'PPDC 2018-2019', 'Summer Promise 2018']]

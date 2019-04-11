@@ -1,3 +1,7 @@
+"""Models for storing student demographics.
+
+Unlike most other models, these are shared models that are built out from multiple sources.
+"""
 from sqlalchemy import Column, Boolean, Integer, String, Date, DateTime, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship
 from etl.models import Base
@@ -87,7 +91,7 @@ class StudentDemographics(Base):
 
 
 class StudentAnnualDemographics(Base):
-    """Model for student demographics that change each school year
+    """Model for student demographics that could change each school year
 
     Source: Student Demographics, Report Card
     """

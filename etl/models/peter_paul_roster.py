@@ -1,3 +1,6 @@
+"""Records Peter Paul specific data as well as summary data from other sources.
+
+"""
 from sqlalchemy import Column, Boolean, Integer, String, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship
 from etl.models import Base

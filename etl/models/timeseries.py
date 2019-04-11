@@ -1,3 +1,4 @@
+"""Provides models to easy time series calculations and setup."""
 from sqlalchemy import Column, Integer, String, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import relationship
 from etl.models import Base
@@ -5,7 +6,7 @@ from etl.utils import get_or_create
 
 
 class SchoolYear(Base):
-    """Model for year time series
+    """Time series for observations occurring once per school year
 
     School years start in September, so Sept 2018 - Sept 2019 has a name of 2019
     """
@@ -30,7 +31,7 @@ class SchoolYear(Base):
 
 
 class Semester(Base):
-    """Time series for observations occuring twice a year.
+    """Time series for observations occurring twice per school year
 
     School years start in September, so Sept 2018 is Fall of 2019 and April of 2019 is Spring of 2019
     """
@@ -53,7 +54,7 @@ class Semester(Base):
 
 
 class Trimester(Base):
-    """Time series for observations occuring three times each year.
+    """Time series for observations occurring three times each year
 
     School years start in September, so Sept 2018 is Fall of 2019 and January of 2019 is Winter of 2019
     """
@@ -77,9 +78,16 @@ class Trimester(Base):
 
 
 class MarkingPeriod(Base):
-    """Time series for observations occuring each quarter.
+    """Time series for observations occurring each quarter of a school year
 
-    School years start in September, so Sept 2018 is MP1 of 2019 and Febuary of 2019 is MP3 of 2019
+    School years start in September adn end in June, so Sept 2018 is MP1 of 2019 and Febuary of 2019 is MP3 of 2019
+
+    .. warning::
+
+        Because this is school year-based, summer is skipped. This is not meant to tie to concepts like
+        Summer Promise. Instead, Summer Promise is thought of as occurring all at once on the first day
+        of the following school year.
+
     """
     __tablename__ = 'marking_period'
     __table_args__ = (UniqueConstraint('school_year_id', 'name', name='uc__school_year__name'),)

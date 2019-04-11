@@ -1,9 +1,10 @@
+"""Contains logic to parse RPS data into a more standard format"""
 import pathlib
 import pandas
 from etl.models.report_card import ReportCard, SchoolAttendance
 from etl.models.student_demographics import Student
 from etl.models.timeseries import MarkingPeriod, SchoolYear
-from etl import utils, session
+from etl import session
 
 
 def get_or_create_student(student_token: int) -> Student:
@@ -61,11 +62,14 @@ def get_or_create_report_card(student: Student, marking_period: MarkingPeriod, s
 
 class SchoolAttendanceListView:
     """View to feed Report Card data into the School Attendance model
+
+    This extract pivots the four marking periods back to a transactional model
     """
 
     model = SchoolAttendance
 
-    def post(self, report_card_file: pathlib.Path):
+    @staticmethod
+    def post(report_card_file: pathlib.Path):
         df = pandas.read_excel(report_card_file.absolute())
         columns_without_mp = ['MarkelID', 'ABSENT', 'TARDY', 'PRESENT', 'SUSPENDED', 'REASON']
         attendance_mp1 = df[['MarkelID', 'MP1 ABSENT', 'MP1 TARDY', 'MP1 PRESENT', 'MP1 # DAYS DUE TO SUSPENSION', 'REASON']].drop_duplicates()
@@ -106,13 +110,13 @@ class SchoolAttendanceListView:
 class ReportCardListView:
     """View to feed Report Card data into the Report Card model
 
-    todo: move grade translation out of the model and into the view, also verify the translation
-    todo: this is ugly but effective, look at making it more readable/expressive
+    This extract pivots subjects and marking periods into one long transactional model
     """
 
     model = ReportCard
 
-    def post(self, report_card_file: pathlib.Path):
+    @staticmethod
+    def post(report_card_file: pathlib.Path):
         df = pandas.read_excel(report_card_file.absolute())
         columns_without_subject = ['MarkelID', 'SUBJECT', 'GRADE']
 

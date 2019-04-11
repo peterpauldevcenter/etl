@@ -53,6 +53,7 @@ def get_or_create_student_annual_demographics(student: Student, school_year: Sch
 
 
 class SchoolListView:
+    """Loads schools into the school model"""
 
     model = School
 
@@ -69,6 +70,7 @@ class SchoolListView:
 
 
 class StudentListView:
+    """Loads student tokens into the student model"""
 
     model = Student
 
@@ -82,6 +84,7 @@ class StudentListView:
 
 
 class StudentDemographicsListView:
+    """Combines mostly static demographics from three different sources into the Student Demographics model"""
 
     model = StudentDemographics
 
@@ -137,6 +140,9 @@ class StudentDemographicsListView:
 
 
 class StudentAnnualDemographicsListView:
+    """Combines annually-variable student demographic data from two different sources
+    into the Student Annual Demographics model
+    """
 
     model = StudentAnnualDemographics
 
