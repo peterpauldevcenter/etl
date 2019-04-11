@@ -3,6 +3,7 @@ import os
 from etl.models.timeseries import SchoolYear, Semester, Trimester, MarkingPeriod
 from etl.models.student_demographics import School, Student, StudentDemographics, StudentAnnualDemographics
 from etl.models.report_card import SchoolAttendance, ReportCard
+from etl.models.peter_paul_roster import PeterPaulLocation, StudentAnnualPeterPaulSummary
 import etl
 import settings
 
@@ -132,3 +133,26 @@ def test_add_report_card():
     assert new_instance.marking_period.school_year.school_year == 2018
     assert new_instance.marking_period.name == 'MP3'
     assert new_instance.subject == 'Science'
+
+
+def test_add_student_annual_peter_paul_summary():
+    model = StudentAnnualPeterPaulSummary
+    create_instance(model, student_token=54321, school_year=2010)
+    student = get_instance(Student, student_token=54321)
+    school_year = get_instance(SchoolYear, school_year=2010)
+    new_instance = get_instance(model, student_id=student.id, school_year_id=school_year.id)
+    new_instance.attended_peter_paul_during_school_year = False
+    new_instance.test_percentile_in_reading = 80
+    assert new_instance.attended_peter_paul_during_school_year is False
+    assert new_instance.test_percentile_in_reading == 80
+    assert new_instance.student.student_token == 54321
+    assert new_instance.school_year.school_year == 2010
+
+
+def test_add_peter_paul_location():
+    model = PeterPaulLocation
+    create_instance(model, name='Peter Paul (and Mary)')
+    new_instance = get_instance(model, name='Peter Paul (and Mary)')
+    session.commit()
+    assert new_instance.name == 'Peter Paul (and Mary)'
+

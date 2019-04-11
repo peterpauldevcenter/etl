@@ -24,8 +24,8 @@ class MAPTest(Base):
     percent_correct = Column(Integer)
     accommodation_category = Column(String)
     accommodation = Column(String)
-    act_projected_proficiency = Column(Enum('On Track', 'Non on Track'))
-    sol_projected_proficiency = Column(Enum('Advanced', 'Proficient', 'Basic'))
+    act_projected_proficiency = Column(String)
+    sol_projected_proficiency = Column(String)
 
 
 class MAPTestGrowth(Base):
