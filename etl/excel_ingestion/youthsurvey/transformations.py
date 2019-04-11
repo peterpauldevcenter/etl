@@ -20,7 +20,7 @@ class TransformationException(ExcelIngestionException):
 
 class QuestionTransformation(abc.ABC):
     """Decorates :class:`~etl.excel_ingestion.youthsurveydata.Question`"""
-    def __init__(self, wrapped: Question):
+    def __init__(self, wrapped: 'Question'):
         self._wrapped = wrapped
 
     def add_to_worksheetrunner(self, worksheetrunner: 'WorksheetRunner'):
