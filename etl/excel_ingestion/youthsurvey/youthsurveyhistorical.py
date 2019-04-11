@@ -5,7 +5,7 @@ Each year is captured under a different column, and so the ranges must be mapped
 """
 import re
 from functools import partial, reduce
-from typing import Iterable, List, Tuple, Dict, AnyStr
+from typing import Iterable, List, Tuple, Dict, AnyStr, Any
 
 from etl.excel_ingestion.youthsurvey.youthsurveydata import YouthSurveyValidationException
 from etl.excel_ingestion.youthsurvey.contrib import add_to_set_indicate_size_change
@@ -59,53 +59,33 @@ def validate_and_get_question_metadata(data):
     return clean
 
 
-def get_student_results(index: int,
-                        question_metadata: Iterable[QuestionNamedTuple],
-                        data) -> 'Dict[AnyStr, Dict[AnyStr, List[Dict]]]':
+def get_student_results(question_metadata: Iterable[QuestionNamedTuple],
+                        row) -> 'Dict[AnyStr, Dict[AnyStr: Dict[AnyStr, Any]]]':
     """Processes a row in the data set returning the students data.
 
     Args:
-        index: The row to process
         question_metadata: The collection of QuestionNamedTuples
-        data: The data set
+        row: The row to process
 
     Returns:
         A dictionary whose key is the student id, and value is another dictionary where each
         key '{season} {year}' contains a list of the questions answers for that biannual.
 
-        It will look like ``{student_id: {'spring 2018': [{question: text, answer: value}]}`` etc
+        It will look like ``{student_id: {'spring 2018': {question: answer}`` etc
 
         Season will be lowercase.
     """
-    row = data[index]
     student_token = str(row[0])
-    if not student_token:
-        raise YouthSurveyValidationException(
-            f'No student token was found on the first column {index} row.'
-        )
-    data = {}
-    ret = {student_token: data}
+
+    all_semesters = {}
+    ret = {student_token: all_semesters}
 
     for meta in question_metadata:
         key = f'{meta.season.lower()} {meta.year}'
-        data.setdefault(key, [])
-        data[key].append({
-            'question': meta.question,
-            'answer': row[meta.index]
-        })
+        all_semesters.setdefault(key, {})
+        answer = row[meta.index]
+        all_semesters[key].update({meta.question: answer})
     return ret
-
-
-def get_answer_for_question(season_year_record_collection, question_text):
-    """Given a list of seasion year records reutrn the answer for the question whose text matches.
-
-    Args:
-        season_year_record_collection: The list of question answer dictionaries returned by func:`get_student_results`
-        question_text: The question whose answer value to return.
-    """
-    for record in season_year_record_collection:
-        if record['question'] == question_text:
-            return record['answer']
 
 
 def get_season_year_question_from_header(header_value: str) -> dict:

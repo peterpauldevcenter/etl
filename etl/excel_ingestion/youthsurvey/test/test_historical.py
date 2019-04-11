@@ -1,9 +1,12 @@
 from etl.excel_ingestion.youthsurvey.youthsurveyhistorical import (
-    question_re, get_student_results, validate_and_get_question_metadata, get_answer_for_question
+    question_re, get_student_results, validate_and_get_question_metadata
 )
+from etl.excel_ingestion.youthsurvey.studentrostersurveyloader import load_student_roster_to_db
 from etl.resources import get_pkg_resource_path
 
 from openpyxl import load_workbook
+from tests.test_models import setup_module, teardown_module, get_instance
+
 
 PACKAGE = 'etl.excel_ingestion.youthsurvey.test'
 
@@ -39,9 +42,21 @@ def test_get_student_results():
     wb = get_workbook('test_student_roster.xlsx')
     data = get_data(wb)
     question_metadata = validate_and_get_question_metadata(data)
-    dictionary = get_student_results(1, question_metadata, data)
+    row = data[1]
+    dictionary = get_student_results(question_metadata, row)
     answers = dictionary['78']
     fall_2015_records = answers['fall 2015']
     question_txt = 'd. Is there an adult here who you will listen to and respect?'
-    answer = get_answer_for_question(fall_2015_records, question_txt)
+    answer = fall_2015_records[question_txt]
     assert answer == 4
+    return dictionary
+
+
+def test_processing_db():
+    setup_module()
+    wb_path = get_pkg_resource_path(PACKAGE, 'test_student_roster.xlsx')
+    load_student_roster_to_db(wb_path)
+
+ret = test_get_student_results()
+
+test_processing_db()
