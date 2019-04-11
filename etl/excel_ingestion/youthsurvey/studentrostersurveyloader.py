@@ -67,6 +67,8 @@ def get_or_create_semester(season, year):
     semester = session.query(timeseries.Semester).filter_by(school_year_id=school_year.id, name=season).first()
     if not semester:
         semester = timeseries.Semester(school_year=year, name=season)
+        session.add(semester)
+        session.commit()
     return semester
 
 
@@ -93,7 +95,10 @@ def create_sections(container, question_object_map, semester_answers):
         section = get_or_create_section(model, container)
         for attr_name, question_txt in attr_to_question.items():
             answer = semester_answers.get(question_txt)
-            setattr(section, attr_name, answer)
+            # Dear god please forgive me
+            field = model.__dict__.__getitem__(attr_name)
+            field.__set__(section, answer)
+
         session.commit()
 
 
