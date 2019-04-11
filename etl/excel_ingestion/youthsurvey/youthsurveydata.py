@@ -1,3 +1,11 @@
+"""
+.. warning::
+
+    This code is currently incomplete as I felt it would be better to try to load the
+    historical data from the Student Roster before building a machine which could
+    digest new survey results.
+"""
+
 import json
 from typing import TYPE_CHECKING
 from collections import namedtuple
