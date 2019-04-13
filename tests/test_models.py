@@ -1,13 +1,10 @@
 import sqlalchemy
 import os
-from etl.models.timeseries import SchoolYear, Semester, Trimester, MarkingPeriod
-from etl.models.student_demographics import School, Student, StudentDemographics, StudentAnnualDemographics
-from etl.models.report_card import SchoolAttendance, ReportCard
-from etl.models.peter_paul_roster import PeterPaulLocation, StudentAnnualPeterPaulSummary
-from etl.models.map_testing import MAPTestGoal, MAPTest, MAPTestGrowth
-import etl
-import settings
-
+from .context import (SchoolYear, Semester, Trimester, MarkingPeriod,
+                      School, Student, StudentDemographics, StudentAnnualDemographics,
+                      SchoolAttendance, ReportCard,
+                      PeterPaulLocation, StudentAnnualPeterPaulSummary,
+                      MAPTestGoal, MAPTest, MAPTestGrowth, settings, etl)
 
 try:
     os.remove(settings.DATABASE)
