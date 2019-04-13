@@ -14,8 +14,21 @@ The component sections roll up to the questionnaire.
 
     - EnjoymentEngagementScale.feel_bored
     - SupportiveSocialEnvironmentScale.does_unwanted_teasing
+
+.. note::
+
+    Unlike Django, SQLAlchemy does not automatically create reverse relations when ForeignKey
+    fields are created. There are two methods to set up the relation, backref_ and back_populates_.
+    The difference being backref automatically creates the reverse relationship, but back_populates
+    requires explicit setting the reverse on the target. I've opted to use back_populates here as it is more explicit.
+
+    .. _backref: https://docs.sqlalchemy.org/en/latest/orm/relationship_api.html#sqlalchemy.orm.relationship.params.backref
+    .. _back_populates: https://docs.sqlalchemy.org/en/latest/orm/relationship_api.html#sqlalchemy.orm.relationship.params.back_populates
+
 """
 from sqlalchemy import Column, Integer, ForeignKey, String
+from sqlalchemy.orm import relationship
+
 from etl.models import Base
 
 
@@ -24,6 +37,7 @@ class SocialScale(Base):
 
     id = Column(Integer, primary_key=True, autoincrement='auto')
     student_experience_questionnaire_id = Column(Integer, ForeignKey('student_experience_questionnaire.id'))
+    questionnaire = relationship('StudentExperienceQuestionnaire', uselist=False, back_populates='socialscale')
 
     kids_friendly_with_each_other = Column(Integer)
     does_unwanted_teasing = Column(Integer)
@@ -38,6 +52,7 @@ class EnjoymentScale(Base):
 
     id = Column(Integer, primary_key=True, autoincrement='auto')
     student_experience_questionnaire_id = Column(Integer, ForeignKey('student_experience_questionnaire.id'))
+    questionnaire = relationship('StudentExperienceQuestionnaire', uselist=False, back_populates='enjoymentscale')
 
     you_like_coming_here = Column(Integer)
     have_fun_here = Column(Integer)
@@ -50,6 +65,7 @@ class ChallengeScale(Base):
 
     id = Column(Integer, primary_key=True, autoincrement='auto')
     student_experience_questionnaire_id = Column(Integer, ForeignKey('student_experience_questionnaire.id'))
+    questionnaire = relationship('StudentExperienceQuestionnaire', uselist=False, back_populates='challengescale')
 
     learn_new_things = Column(Integer)
     feel_challenged = Column(Integer)
@@ -61,6 +77,7 @@ class SupportiveAdultScale(Base):
 
     id = Column(Integer, primary_key=True, autoincrement='auto')
     student_experience_questionnaire_id = Column(Integer, ForeignKey('student_experience_questionnaire.id'))
+    questionnaire = relationship('StudentExperienceQuestionnaire', uselist=False, back_populates='supportiveadultscale')
 
     adult_interested_in_think = Column(Integer)
     adult_can_talk_when_upset = Column(Integer)
@@ -73,6 +90,7 @@ class ReaderScale(Base):
 
     id = Column(Integer, primary_key=True, autoincrement='auto')
     student_experience_questionnaire_id = Column(Integer, ForeignKey('student_experience_questionnaire.id'))
+    questionnaire = relationship('StudentExperienceQuestionnaire', uselist=False, back_populates='readerscale')
 
     like_to_read_at_home = Column(Integer)
     like_to_read_at_school = Column(Integer)
@@ -87,6 +105,7 @@ class MathScale(Base):
 
     id = Column(Integer, primary_key=True, autoincrement='auto')
     student_experience_questionnaire_id = Column(Integer, ForeignKey('student_experience_questionnaire.id'))
+    questionnaire = relationship('StudentExperienceQuestionnaire', uselist=False, back_populates='mathscale')
 
     like_to_learn_new_math = Column(Integer)
     like_to_do_math_at_school = Column(Integer)
@@ -105,6 +124,7 @@ class Retrospective(Base):
 
     id = Column(Integer, primary_key=True, autoincrement='auto')
     student_experience_questionnaire_id = Column(Integer, ForeignKey('student_experience_questionnaire.id'))
+    questionnaire = relationship('StudentExperienceQuestionnaire', uselist=False, back_populates='retrospective')
 
     coming_to_this_program_helped_read_more_often = Column(Integer)
     coming_helped_math = Column(Integer)
@@ -124,6 +144,7 @@ class Freeform(Base):
 
     id = Column(Integer, primary_key=True, autoincrement='auto')
     student_experience_questionnaire_id = Column(Integer, ForeignKey('student_experience_questionnaire.id'))
+    questionnaire = relationship('StudentExperienceQuestionnaire', uselist=False, back_populates='freeform')
 
     favorite_thing_to_do_here = Column(String(length=280))
     activities_wish_offered = Column(String(length=280))
@@ -137,3 +158,12 @@ class StudentExperienceQuestionnaire(Base):
     id = Column(Integer, primary_key=True, autoincrement='auto')
     student_id = Column(Integer, ForeignKey('student.id'))
     semester_id = Column(Integer, ForeignKey('semester.id'))
+
+    socialscale = relationship('SocialScale', uselist=False, back_populates='questionnaire')
+    enjoymentscale = relationship('SocialScale', uselist=False, back_populates='questionnaire')
+    challengescale = relationship('SocialScale', uselist=False, back_populates='questionnaire')
+    supportiveadultscale = relationship('SocialScale', uselist=False, back_populates='questionnaire')
+    readerscale = relationship('SocialScale', uselist=False, back_populates='questionnaire')
+    mathscale = relationship('SocialScale', uselist=False, back_populates='questionnaire')
+    retrospective = relationship('SocialScale', uselist=False, back_populates='questionnaire')
+    freeform = relationship('SocialScale', uselist=False, back_populates='questionnaire')
