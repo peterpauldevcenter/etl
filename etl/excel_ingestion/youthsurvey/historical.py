@@ -7,7 +7,7 @@ import re
 from functools import partial, reduce
 from typing import Iterable, List, Tuple, Dict, AnyStr, Any
 
-from etl.excel_ingestion.youthsurvey.youthsurveydata import YouthSurveyValidationException
+from etl.excel_ingestion.youthsurvey.new import YouthSurveyValidationException
 from etl.excel_ingestion.youthsurvey.contrib import add_to_set_indicate_size_change
 from collections import namedtuple
 
@@ -42,6 +42,11 @@ def get_data(workbook):
 def validate_and_get_question_metadata(data):
     """Validates the Excel column structure and returns question metadata records."""
     headers = data[0]
+    if headers[0].lower() not in ('markelid', 'studentid', 'id', 'pk'):
+        raise YouthSurveyValidationException(
+            'First column is not a known student id alias. Make sure to add student '
+            'id as the first column with a header like MarkelID, StudentID, ID, or PK.'
+        )
 
     question_data = get_question_named_tuple_from_headers(headers)
     clean, duplicates = check_duplicates(question_data)
@@ -203,7 +208,7 @@ def check_headers(year_season_collection: Iterable[QuestionNamedTuple]):
         accu_len, next_item_len = len(year_season_data), len(next_year_season_data)
         if accu_len != next_item_len:
             raise YouthSurveyValidationException(
-                f'{err_msg_stem} question collections are of different length!'
+                f'{err_msg_stem} are of different length!'
             )
 
         season_q_text = set((record.question for record in year_season_data))

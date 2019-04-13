@@ -12,7 +12,7 @@ from collections import namedtuple
 
 from fuzzywuzzy import fuzz
 
-from etl.excel_ingestion.youthsurvey.contrib import excel_column_alpha_to_index, ExcelIngestionException
+from etl.excel_ingestion.utils import excel_column_alpha_to_index, ExcelIngestionException
 from etl.excel_ingestion.youthsurvey.transformations import (
     ScaleTransformation, InverseScaleTransformation, AgreementTransformation, ExpectationTransformation,
     GradeStringToIntTransformation

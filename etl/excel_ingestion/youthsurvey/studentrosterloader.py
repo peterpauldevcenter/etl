@@ -8,8 +8,8 @@ from openpyxl import load_workbook
 from etl.resources import get_pkg_resource_path
 from etl.models import questionnaire, timeseries
 from etl.views.peter_paul_roster import get_or_create_student, get_or_create_school_year
-from etl.excel_ingestion.youthsurvey.contrib import get_or_create
-from etl.excel_ingestion.youthsurvey.youthsurveyhistorical import (
+from etl.excel_ingestion.utils import get_or_create
+from etl.excel_ingestion.youthsurvey.historical import (
     get_workbook, get_data, validate_and_get_question_metadata, get_student_results, YouthSurveyValidationException)
 from etl import session
 

@@ -1,7 +1,7 @@
-from etl.excel_ingestion.youthsurvey.youthsurveyhistorical import (
+from etl.excel_ingestion.youthsurvey.historical import (
     question_re, get_student_results, validate_and_get_question_metadata
 )
-from etl.excel_ingestion.youthsurvey.studentrostersurveyloader import load_student_roster_to_db
+from etl.excel_ingestion.youthsurvey.studentrosterloader import load_student_roster_to_db
 from etl.resources import get_pkg_resource_path
 
 from openpyxl import load_workbook
